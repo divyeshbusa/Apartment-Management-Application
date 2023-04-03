@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
   final controller;
-  final String hintText;
+  final String hintText, validation;
   final bool obscureText;
   final onChange;
 
@@ -11,14 +11,22 @@ class MyTextField extends StatelessWidget {
       required this.controller,
       required this.hintText,
       required this.obscureText,
-      required this.onChange})
+      required this.onChange,
+      required this.validation})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return validation;
+          } else {
+            return null;
+          }
+        },
         controller: controller,
         obscureText: obscureText,
         onChanged: onChange,

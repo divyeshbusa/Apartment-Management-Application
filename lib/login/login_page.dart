@@ -10,6 +10,8 @@ import 'package:apartment_management/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../pages/userwise_apartment_list.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -21,11 +23,13 @@ class _LoginPageState extends State<LoginPage> {
   var usernameController = TextEditingController();
   final passwordController = TextEditingController();
   MyDatabase db = MyDatabase();
+  final _formKey = GlobalKey<FormState>();
+
+  bool isGetData = true;
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -36,204 +40,314 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                Container(
-                    child: Image.asset('assets/images/intro1.png'),
-                    height: 230),
-                SizedBox(height: 20),
-                Text(
-                  'APARTMENT MANAGEMENT',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  Container(
+                      child: Image.asset('assets/images/intro1.png'),
+                      height: 230),
+                  SizedBox(height: 20),
+                  const Text(
+                    'APARTMENT MANAGEMENT',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Make it ',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Make it ',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '" SIMPLE "',
-                      style: TextStyle(
-                        color: Color.fromRGBO(174, 143, 60, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
+                      Text(
+                        '" SIMPLE "',
+                        style: TextStyle(
+                          color: Color.fromRGBO(174, 143, 60, 1),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 25),
-                MyTextField(
-                    controller: usernameController,
-                    hintText: "Username",
-                    obscureText: false,
-                    onChange: (value) {
-                      return Container();
-                    }),
-                SizedBox(height: 15),
-                MyTextField(
-                    controller: passwordController,
-                    hintText: "Password",
-                    obscureText: true,
-                    onChange: (value) {
-                      return Container();
-                    }),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).push(
-                    //     MaterialPageRoute(
-                    //       builder: (context) => ForgotScreen(true),
-                    //     ),
-                    //   );
-                    // },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                color: Color.fromRGBO(174, 143, 60, 1)),
+                    ],
+                  ),
+                  SizedBox(height: 25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "please enter username.";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: usernameController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(237, 192, 80, 1),
                           ),
                         ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: "Username",
+                        hintStyle: TextStyle(
+                          color: Color.fromRGBO(67, 89, 101, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "please enter password.";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(237, 192, 80, 1),
+                          ),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: "Password",
+                        hintStyle: TextStyle(
+                          color: Color.fromRGBO(67, 89, 101, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: InkWell(
+                      // onTap: () {
+                      //   Navigator.of(context).push(
+                      //     MaterialPageRoute(
+                      //       builder: (context) => ForgotScreen(true),
+                      //     ),
+                      //   );
+                      // },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(174, 143, 60, 1)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  MyButton(
+                    name: 'Sign in',
+                    fontsize: 20,
+                    ContainerColor: Color.fromRGBO(174, 143, 60, 1),
+                    padding: 20,
+                    // onTap: () async {
+                    //   if (_formKey.currentState!.validate()) {
+                    //     UserModel? modelU = await db.getLoginDetail(
+                    //       usernameController.text.toString(),
+                    //       passwordController.text.toString(),
+                    //     );
+                    //     final SharedPreferences prefs =
+                    //         await SharedPreferences.getInstance();
+                    //     await prefs.setInt('UserID', modelU!.UserID as int);
+                    //     await prefs.setString(
+                    //         'UserName', modelU.UserName.toString());
+                    //     await prefs.setString('Email', modelU.Email.toString());
+                    //     await prefs.setString('Phone', modelU.Phone.toString());
+                    //     await prefs.setString(
+                    //         'UserType', modelU.UserType.toString());
+                    //     await prefs.setString(
+                    //         'UserImage', modelU.UserImage.toString());
+                    //
+                    //     prefs.setBool(SplashScreenState.KEYLOGIN, true);
+                    //
+                    //     if (modelU != null) {
+                    //       Navigator.of(context).pushReplacement(
+                    //         MaterialPageRoute(
+                    //           builder: (context) => Dashboard(model: modelU),
+                    //         ),
+                    //       );
+                    //
+                    //       usernameController.clear();
+                    //       passwordController.clear();
+                    //     } else {
+                    //       showAlertDialogForInvalidLogin(context);
+                    //     }
+                    //   }
+                    // },
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        print(
+                            "::::::::::::::::before model::::::::::::::::::::");
+                        UserModel? modelU = await db.getLoginDetail(
+                          usernameController.text.toString(),
+                          passwordController.text.toString(),
+                        );
+                        // print("::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+                        if (modelU != null) {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.setInt('UserID', modelU!.UserID as int);
+                          await prefs.setString(
+                              'UserName', modelU.UserName.toString());
+                          await prefs.setString(
+                              'Email', modelU.Email.toString());
+                          await prefs.setString(
+                              'Phone', modelU.Phone.toString());
+                          await prefs.setString(
+                              'UserType', modelU.UserType.toString());
+                          await prefs.setString(
+                              'UserImage', modelU.UserImage.toString());
+
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  UserwiseApartmentList(id: modelU.UserID),
+                            ),
+                          );
+                        } else {
+                          showAlertDialogForInvalidLogin(context);
+                        }
+                        ;
+
+                        usernameController.clear();
+                        passwordController.clear();
+                      }
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Divider(
+                          thickness: 0.5,
+                          color: Color.fromRGBO(174, 143, 60, 1),
+                        )),
+                        Text(
+                          'Or Continue With',
+                          style: TextStyle(
+                              color: Color.fromRGBO(174, 143, 60, 1),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Expanded(
+                            child: Divider(
+                          thickness: 0.5,
+                          color: Color.fromRGBO(174, 143, 60, 1),
+                        )),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                MyButton(
-                  name: 'Sign in',
-                  fontsize: 20,
-                  ContainerColor: Color.fromRGBO(174, 143, 60, 1),
-                  padding: 20,
-                  onTap: () async {
-                    UserModel? modelU = await db.getLoginDetail(usernameController.text.toString(),
-                        passwordController.text.toString());
-                    final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-                    await prefs.setInt('UserID', modelU!.UserID as int);
-                    await prefs.setString(
-                        'UserName', modelU.UserName.toString());
-                    await prefs.setString(
-                        'Email', modelU.Email.toString());
-                    await prefs.setString('Phone', modelU.Phone.toString());
-                    await prefs.setString(
-                        'UserType', modelU.UserType.toString());
-                    await prefs.setString(
-                        'UserImage', modelU.UserImage.toString());
-
-                    prefs.setBool(SplashScreenState.KEYLOGIN, true);
-
-                    if(modelU != null){
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Dashboard(model: modelU),
-                        ),
-                      );
-
-                      usernameController.clear();
-                      passwordController.clear();
-                    }
-                    else{
-                      showAlertDialogForInvalidLogin(context);
-                    }
-                  },
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Row(
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Color.fromRGBO(174, 143, 60, 1),
-                          )),
-                      Text(
-                        'Or Continue With',
-                        style: TextStyle(
-                            color: Color.fromRGBO(174, 143, 60, 1),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Color.fromRGBO(174, 143, 60, 1),
-                          )),
+                      GestureDetector(
+                          onTap: () {
+                            showAlertDialogForGoogleLogin(context);
+                          },
+                          child: SquareTile(
+                              imagepath: 'assets/images/google.png')),
+                      SizedBox(width: 25),
+                      GestureDetector(
+                          // onTap: () async {
+                          //   print(
+                          //       "::::::::::::::::before model::::::::::::::::::::");
+                          //   UserModel? modelU = await db.getLoginDetail(
+                          //     'abc@gmail.com',
+                          //     'admin',
+                          //   );
+                          //   print(
+                          //       "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+                          //
+                          //   final SharedPreferences prefs =
+                          //       await SharedPreferences.getInstance();
+                          //   await prefs.setInt('UserID', modelU!.UserID as int);
+                          //   await prefs.setString(
+                          //       'UserName', modelU.UserName.toString());
+                          //   await prefs.setString(
+                          //       'Email', modelU.Email.toString());
+                          //   await prefs.setString(
+                          //       'Phone', modelU.Phone.toString());
+                          //   await prefs.setString(
+                          //       'UserType', modelU.UserType.toString());
+                          //   await prefs.setString(
+                          //       'UserImage', modelU.UserImage.toString());
+                          //
+                          //   Navigator.of(context).push(
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           UserwiseApartmentList(id: modelU.UserID),
+                          //     ),
+                          //   );
+                          // },
+                          child:
+                              SquareTile(imagepath: 'assets/images/apple.png')),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => AddUser(),
-                            ),
-                          );
-                        },
-                        child:
-                        SquareTile(imagepath: 'assets/images/google.png')),
-                    SizedBox(width: 25),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => AddUser(),
-                            ),
-                          );
-                        },
-                        child:
-                        SquareTile(imagepath: 'assets/images/apple.png')),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not a member ?',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => AddUser(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        ' Register Now',
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Not a member ?',
                         style: TextStyle(
-                            color: Color.fromRGBO(174, 143, 60, 1),
-                            fontWeight: FontWeight.bold),
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
-                    )
-                  ],
-                ),
-              ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => AddUser(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          ' Register Now',
+                          style: TextStyle(
+                              color: Color.fromRGBO(174, 143, 60, 1),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -274,5 +388,109 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  showAlertDialogForGoogleLogin(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+        backgroundColor: Colors.white,
+        shape: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+        title: Text(
+          "Google Login",
+          style: TextStyle(color: Colors.black),
+        ),
+        content: Column(
+          children: [
+            InkWell(
+              onTap: () async {
+                print(
+                    "::::::::::::::::before model::::::::::::::::::::");
+                UserModel? modelU = await db.getLoginDetail(
+                  'abc@gmail.com',
+                  'admin',
+                );
+                print(
+                    "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
 
+                final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+                await prefs.setInt('UserID', modelU!.UserID as int);
+                await prefs.setString(
+                    'UserName', modelU.UserName.toString());
+                await prefs.setString(
+                    'Email', modelU.Email.toString());
+                await prefs.setString(
+                    'Phone', modelU.Phone.toString());
+                await prefs.setString(
+                    'UserType', modelU.UserType.toString());
+                await prefs.setString(
+                    'UserImage', modelU.UserImage.toString());
+
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        UserwiseApartmentList(id: modelU.UserID),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.blue.shade900),
+                    borderRadius: BorderRadius.circular(10)),
+                width: double.maxFinite,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 10,),
+                    Image.asset("assets/images/google.png", width: 20),
+                    SizedBox(width: 25,),
+                    FutureBuilder<UserModel>(
+                        builder: (context, snapshot) {
+                          if (snapshot != null && snapshot.hasData) {
+                            isGetData = false;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${snapshot.data!.Email}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Center(
+                              child: Text('USER NOT FOUND '),
+                            );
+                          }
+                        },
+                        future: isGetData ? userDetail() : null),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future<UserModel> userDetail() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserModel modelU = UserModel(
+        UserName1: prefs.getString('UserName').toString(),
+        Phone1: prefs.getString('Phone'),
+        Email1: prefs.getString('Email').toString(),
+        UserType1: prefs.getString('UserType').toString(),
+        UserImage1: prefs.getString('UserImage').toString());
+    modelU.UserID = prefs.getInt('UserID');
+
+    return modelU;
+  }
 }

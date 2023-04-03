@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VerificationList extends StatefulWidget {
-  const VerificationList({Key? key}) : super(key: key);
+  var apartmentid;
+
+  VerificationList({required this.apartmentid});
 
   @override
   State<VerificationList> createState() => _VerificationListState();
@@ -16,6 +18,7 @@ class _VerificationListState extends State<VerificationList> {
   List<VerifyModel> localList = [];
   List<VerifyModel> searchList = [];
   TextEditingController controller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class _VerificationListState extends State<VerificationList> {
                   'VERIFICATION LIST',
                   style: GoogleFonts.montserratAlternates(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -294,7 +297,7 @@ class _VerificationListState extends State<VerificationList> {
                   );
                 }
               },
-              future: isGetData ? db.getNotVerifirdUsrListFromTbl() : null),
+              future: isGetData ? db.getNotVerifirdUsrListFromTbl(widget.apartmentid) : null),
         ),
       ),
     );

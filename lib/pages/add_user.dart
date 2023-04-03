@@ -81,7 +81,7 @@ class _AddUserState extends State<AddUser> {
                   'Registration Form',
                   style: GoogleFonts.montserratAlternates(
                       color: Color.fromRGBO(66, 66, 66, 1),
-                      fontSize: 30,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -114,6 +114,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                           flex: 75,
                           child: MyTextField(
+                              validation: "please enter in this field.",
                               controller: nameController,
                               hintText: 'User name',
                               obscureText: false,
@@ -138,6 +139,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                           flex: 75,
                           child: MyTextField(
+                              validation: "please enter in this field.",
                               controller: phoneController,
                               hintText: 'Phone',
                               obscureText: false,
@@ -162,6 +164,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                           flex: 75,
                           child: MyTextField(
+                              validation: "please enter in this field.",
                               controller: emailController,
                               hintText: 'Email',
                               obscureText: false,
@@ -186,6 +189,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                           flex: 75,
                           child: MyTextField(
+                              validation: "please enter in this field.",
                               controller: typeController,
                               hintText: 'User Type',
                               obscureText: false,
@@ -210,6 +214,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                           flex: 75,
                           child: MyTextField(
+                              validation: "please enter in this field.",
                               controller: passwordController,
                               hintText: 'password',
                               obscureText: false,
@@ -234,6 +239,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                           flex: 75,
                           child: MyTextField(
+                              validation: "please enter in this field.",
                               controller: confirmPasswordController,
                               hintText: 'Confirm password',
                               obscureText: false,

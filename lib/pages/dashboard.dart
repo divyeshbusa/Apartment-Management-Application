@@ -1,3 +1,4 @@
+import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/login/login_page.dart';
 import 'package:apartment_management/login/splashscreen.dart';
 import 'package:apartment_management/models/user_model.dart';
@@ -18,6 +19,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  MyDatabase db = MyDatabase();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -137,6 +139,34 @@ class _DashboardState extends State<Dashboard> {
                     const SizedBox(width: 30),
                     const Text(
                       'Log Out',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                onTap: () async {
+
+
+                  // db.deleteUserFromUserTable(2);
+                },
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Color.fromRGBO(174, 143, 60, 1)),
+                      height: 40,
+                      width: 40,
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    const Text(
+                      'Delete',
                       style: TextStyle(fontSize: 18),
                     ),
                   ],

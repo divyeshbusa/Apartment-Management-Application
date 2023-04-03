@@ -200,6 +200,27 @@ class MyDatabase {
     return apartmentList;
   }
 
+  Future<List<apartmentModel>> getApartmentListUserWise(int userid) async {
+    print(":::::::::::::USERID:::$userid::::::::");
+    List<apartmentModel> apartmentList = [];
+    Database db = await initDatabase();
+    List<Map<String, Object?>> data = await db
+        .rawQuery('select * from Tbl_ApartmentWiseUser AU inner join MST_Apartment A Where A.ApartmentID == AU.ApartmentID and AU.UserID == $userid and AU.isVerified == 1');
+    print(":::::::::::::DATA:::$data::::::::");
+    for (int i = 0; i < data.length; i++) {
+      apartmentModel model = apartmentModel(
+          ApartmentName1: data[i]['ApartmentName'].toString(),
+          ApartmentCode1: data[i]['ApartmentCode'] as int,
+          wings1: data[i]['Wings'] as int);
+      model.ApartmentID = data[i]['ApartmentID'] as int;
+
+      apartmentList.add(model);
+    }
+
+    print("APARTMENT LIST ::: ${apartmentList.length}");
+    return apartmentList;
+  }
+
   Future<List<UserModel>> getDataFromUserTable(int ApartmentID) async {
     List<UserModel> userList = [];
     Database db = await initDatabase();
@@ -222,11 +243,11 @@ class MyDatabase {
     return userList;
   }
 
-  Future<List<VerifyModel>> getNotVerifirdUsrListFromTbl() async {
+  Future<List<VerifyModel>> getNotVerifirdUsrListFromTbl(int apartmentid) async {
     List<VerifyModel> verifyList = [];
     Database db = await initDatabase();
     List<Map<String, Object?>> data = await db.rawQuery(
-        'select * from Tbl_ApartmentWiseUser AU inner join LST_Userlist U on AU.UserID = U.UserID inner join MST_Apartment A on AU.ApartmentID = A.ApartmentID where isVerified == 0');
+        'select * from Tbl_ApartmentWiseUser AU inner join LST_Userlist U on AU.UserID = U.UserID inner join MST_Apartment A on AU.ApartmentID = A.ApartmentID where isVerified == 0 and AU.ApartmentID == $apartmentid');
     for (int i = 0; i < data.length; i++) {
       VerifyModel model = VerifyModel(
         ApartmentID1: data[i]['ApartmentID'] as int,
@@ -250,14 +271,14 @@ class MyDatabase {
     return verifyList;
   }
 
-  Future<int> getAdminOrNotFromTbl(int userid) async {
+  Future<int> getAdminOrNotFromTbl(int userid,int apartmentid) async {
     Database db = await initDatabase();
     List<Map<String, Object?>> data = await db.rawQuery(
         'select * from Tbl_ApartmentWiseUser where UserID = "$userid"');
 
     if (data.isNotEmpty) {
       print("isVerified::::${data[0]['isVerified']}");
-      if (data[0]['isAdmin'] == 1) {
+      if (data[0]['isAdmin'] == 1 && data[0]['ApartmentID'] == apartmentid) {
         return 1;
       } else {
         return 0;
@@ -422,4 +443,17 @@ class MyDatabase {
     await db.update('Tbl_ApartmentWiseUser', map,
         where: 'UserID = ?', whereArgs: [UserID]);
   }
+
+  Future<int> deleteUserFromUserTable(userID) async {
+    Database db = await initDatabase();
+    int deletedid = await db.delete(
+      'Tbl_ApartmentWiseUser',
+      where: 'UserID = ?',
+      whereArgs: [userID],
+    );
+    print('DELETEID:::::::::${deletedid}');
+    return userID;
+  }
+
+
 }

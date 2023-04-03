@@ -34,11 +34,11 @@ dependencies:
   lottie: ^2.2.0
   path_provider: ^2.0.11
   sqflite: ^2.2.0+3
-  dropdown_button2: ^1.9.1
-  intl: ^0.17.0
+  dropdown_button2: ^2.0.0
+  intl: ^0.18.0
   smooth_page_indicator: ^1.0.1
   animated_splash_screen: ^1.3.0
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   shared_preferences: ^2.0.20
 
   # The following adds the Cupertino Icons font to your application.
@@ -72,6 +72,9 @@ flutter:
     - assets/animation/
     - assets/database/Apartment_Management.db
     - assets/images/
+    - assets/images/background2.jpg
+    - assets/images/bg4.jpg
+    - assets/images/bg5.jpg
     - assets/fonts/
 
 

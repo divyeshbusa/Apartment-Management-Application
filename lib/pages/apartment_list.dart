@@ -69,10 +69,6 @@ class _ApartmentListState extends State<ApartmentList> {
     super.initState();
     db.copyPasteAssetFileToRoot();
     db.initDatabase();
-
-    setState(() {
-      AdminOrNot();
-    });
   }
 
   @override
@@ -98,7 +94,7 @@ class _ApartmentListState extends State<ApartmentList> {
                   'Apartment List',
                   style: GoogleFonts.montserratAlternates(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -142,35 +138,6 @@ class _ApartmentListState extends State<ApartmentList> {
                       ],
                     ),
                   ),
-                  showVerifyButton
-                      ? GestureDetector(
-                          onTap: () async {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => VerificationList(),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Verify',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Icon(
-                                Icons.verified_rounded,
-                                color: Color.fromRGBO(174, 143, 60, 1),
-                              )
-                            ],
-                          ),
-                        )
-                      : Container(),
                 ],
               ),
             ),
@@ -187,7 +154,14 @@ class _ApartmentListState extends State<ApartmentList> {
 
                       return DropdownButtonHideUnderline(
                         child: DropdownButton2(
-                          buttonWidth: MediaQuery.of(context).size.width * 0.90,
+                          buttonStyleData: ButtonStyleData(
+                            width: MediaQuery.of(context).size.width * 0.90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey.shade700),
+                              color: Color.fromRGBO(230, 150, 156, 1),
+                            ),
+                          ),
                           items: snapshot.data!
                               .map((item) => DropdownMenuItem<CountryModel?>(
                                     value: item,
@@ -217,18 +191,15 @@ class _ApartmentListState extends State<ApartmentList> {
                                   'selectedCountry:::::::::${selectedCountry}');
                             });
                           },
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: const Icon(
-                              color: Colors.white,
-                              Icons.keyboard_arrow_down_outlined,
+                          iconStyleData: IconStyleData(
+                            icon: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: const Icon(
+                                color: Colors.white,
+                                Icons.keyboard_arrow_down_outlined,
+                              ),
                             ),
-                          ),
-                          iconSize: 28,
-                          buttonDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey.shade700),
-                            color: Color.fromRGBO(230, 150, 156, 1),
+                            iconSize: 28,
                           ),
                         ),
                       );
@@ -253,7 +224,14 @@ class _ApartmentListState extends State<ApartmentList> {
 
                       return DropdownButtonHideUnderline(
                         child: DropdownButton2(
-                          buttonWidth: MediaQuery.of(context).size.width * 0.90,
+                          buttonStyleData: ButtonStyleData(
+                            width: MediaQuery.of(context).size.width * 0.90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey.shade700),
+                              color: Color.fromRGBO(230, 150, 156, 1),
+                            ),
+                          ),
                           items: snapshot.data!
                               .map((item) => DropdownMenuItem<StateModel?>(
                                     value: item,
@@ -280,18 +258,15 @@ class _ApartmentListState extends State<ApartmentList> {
                               isGetCity = true;
                             });
                           },
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: const Icon(
-                              color: Colors.white,
-                              Icons.keyboard_arrow_down_outlined,
+                          iconStyleData: IconStyleData(
+                            icon: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: const Icon(
+                                color: Colors.white,
+                                Icons.keyboard_arrow_down_outlined,
+                              ),
                             ),
-                          ),
-                          iconSize: 28,
-                          buttonDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey.shade700),
-                            color: Color.fromRGBO(230, 150, 156, 1),
+                            iconSize: 28,
                           ),
                         ),
                       );
@@ -318,7 +293,14 @@ class _ApartmentListState extends State<ApartmentList> {
 
                       return DropdownButtonHideUnderline(
                         child: DropdownButton2(
-                          buttonWidth: MediaQuery.of(context).size.width * 0.90,
+                          buttonStyleData: ButtonStyleData(
+                            width: MediaQuery.of(context).size.width * 0.90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey.shade700),
+                              color: Color.fromRGBO(230, 150, 156, 1),
+                            ),
+                          ),
                           items: snapshot.data!
                               .map((item) => DropdownMenuItem<CityModel?>(
                                     value: item,
@@ -344,18 +326,15 @@ class _ApartmentListState extends State<ApartmentList> {
                               selectedCity = value.CityID;
                             });
                           },
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: const Icon(
-                              color: Colors.white,
-                              Icons.keyboard_arrow_down_outlined,
+                          iconStyleData: IconStyleData(
+                            icon: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: const Icon(
+                                color: Colors.white,
+                                Icons.keyboard_arrow_down_outlined,
+                              ),
                             ),
-                          ),
-                          iconSize: 28,
-                          buttonDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey.shade700),
-                            color: Color.fromRGBO(230, 150, 156, 1),
+                            iconSize: 28,
                           ),
                         ),
                       );
@@ -551,7 +530,7 @@ class _ApartmentListState extends State<ApartmentList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UserDetail(),
+                  builder: (context) => UserDetail(apartmentid: apartmentID),
                 ),
               );
             },
@@ -593,6 +572,7 @@ class _ApartmentListState extends State<ApartmentList> {
         style: TextStyle(color: Colors.white),
       ),
       content: MyTextField(
+          validation: "please enter verification code.",
           controller: verifyController,
           hintText: 'Verification Code',
           obscureText: false,
@@ -676,11 +656,9 @@ class _ApartmentListState extends State<ApartmentList> {
     );
   }
 
-  Future<void> AdminOrNot() async {
-    int isAdmin = await db.getAdminOrNotFromTbl(widget.model!.UserID as int);
-    print("::::::isAdmin:::${isAdmin}::::::::");
-    if (isAdmin == 1) {
-      showVerifyButton = true;
-    }
-  }
+// Future<bool> isAdminOrNot() async {
+//   int isAdmin = await db.getAdminOrNotFromTbl(widget.model!.UserID as int);
+//   print("::::::isAdmin:::${isAdmin}::::::::");
+//   return (isAdmin == 1);
+// }
 }

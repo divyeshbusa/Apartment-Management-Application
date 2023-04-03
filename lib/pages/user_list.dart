@@ -44,7 +44,7 @@ class _UserListState extends State<UserList> {
                   'Member List',
                   style: GoogleFonts.montserratAlternates(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
               ),

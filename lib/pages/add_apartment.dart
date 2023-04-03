@@ -98,6 +98,7 @@ class _AddApartmentState extends State<AddApartment> {
                       ),
                       Expanded(
                         child: MyTextField(
+                            validation: "please enter apartment name.",
                             controller: nameController,
                             hintText: 'Apartment Name',
                             obscureText: false,
@@ -120,6 +121,7 @@ class _AddApartmentState extends State<AddApartment> {
                       ),
                       Expanded(
                         child: MyTextField(
+                            validation: "please enter apartment code.",
                             controller: codeController,
                             hintText: 'Apartment Code',
                             obscureText: false,
@@ -142,6 +144,7 @@ class _AddApartmentState extends State<AddApartment> {
                       ),
                       Expanded(
                         child: MyTextField(
+                            validation: "please enter Wings.",
                             controller: wingController,
                             hintText: 'Total Wings',
                             obscureText: false,
@@ -172,6 +175,16 @@ class _AddApartmentState extends State<AddApartment> {
 
                             return DropdownButtonHideUnderline(
                               child: DropdownButton2(
+                                buttonStyleData: ButtonStyleData(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.90,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border:
+                                        Border.all(color: Colors.grey.shade700),
+                                    color: Color.fromRGBO(230, 150, 156, 1),
+                                  ),
+                                ),
                                 items: snapshot.data!
                                     .map((item) => DropdownMenuItem<CityModel?>(
                                           value: item,
@@ -198,18 +211,15 @@ class _AddApartmentState extends State<AddApartment> {
                                     SubmitValue = true;
                                   });
                                 },
-                                icon: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: const Icon(
-                                    color: Colors.white,
-                                    Icons.keyboard_arrow_down_outlined,
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: const Icon(
+                                      color: Colors.white,
+                                      Icons.keyboard_arrow_down_outlined,
+                                    ),
                                   ),
-                                ),
-                                iconSize: 28,
-                                buttonDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.grey.shade700),
-                                  color: Color.fromRGBO(230, 150, 156, 1),
+                                  iconSize: 28,
                                 ),
                               ),
                             );
@@ -243,7 +253,8 @@ class _AddApartmentState extends State<AddApartment> {
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(color: Colors.grey.shade700),
