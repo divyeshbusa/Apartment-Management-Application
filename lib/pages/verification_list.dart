@@ -15,8 +15,8 @@ class VerificationList extends StatefulWidget {
 class _VerificationListState extends State<VerificationList> {
   MyDatabase db = MyDatabase();
   bool isGetData = true;
-  List<VerifyModel> localList = [];
-  List<VerifyModel> searchList = [];
+  List<MemberModel> localList = [];
+  List<MemberModel> searchList = [];
   TextEditingController controller = TextEditingController();
 
 
@@ -53,7 +53,7 @@ class _VerificationListState extends State<VerificationList> {
         body: Container(
           margin: EdgeInsets.only(top: 20),
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: FutureBuilder<List<VerifyModel>>(
+          child: FutureBuilder<List<MemberModel>>(
               builder: (context, snapshot) {
                 if (snapshot != null && snapshot.hasData) {
                   if (isGetData) {

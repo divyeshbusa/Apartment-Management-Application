@@ -2,14 +2,16 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:apartment_management/models/apartment_list_model.dart';
 import 'package:apartment_management/models/city_model.dart';
+import 'package:apartment_management/models/collection_model.dart';
+import 'package:apartment_management/models/collection_type_model.dart';
 import 'package:apartment_management/models/country_model.dart';
-import 'package:apartment_management/models/location_model.dart';
-import 'package:apartment_management/models/password_model.dart';
 import 'package:apartment_management/models/state_model.dart';
+import 'package:apartment_management/models/transaction_model.dart';
 import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/models/verify_model.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -34,36 +36,6 @@ class MyDatabase {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await new File(path).writeAsBytes(bytes);
     }
-  }
-
-  Future<List<LocationModel>> getLocationListFromTbl() async {
-    List<LocationModel> locationList = [];
-    Database db = await initDatabase();
-    List<Map<String, Object?>> data = await db.rawQuery(
-        'select C.CityID,C.CityName,S.StateID,S.StateName,N.CountryID,N.CountryName from MST_city C inner join MST_State S ON C.StateID == S.StateID inner join MST_Country N ON N.CountryID == S.CountryID');
-    LocationModel model = LocationModel(
-        CityID1: -1,
-        CityName1: 'Select City',
-        StateID1: -1,
-        StateName1: 'Select State',
-        CountryID1: -1,
-        CountryName1: 'Select Country');
-
-    locationList.add(model);
-    for (int i = 0; i < data.length; i++) {
-      model = LocationModel(
-        CityID1: data[i]['CityID'] as int,
-        CityName1: data[i]['CityName'].toString(),
-        StateID1: data[i]['StateID'] as int,
-        StateName1: data[i]['StateName'].toString(),
-        CountryID1: data[i]['CountryID'] as int,
-        CountryName1: data[i]['CountryName'].toString(),
-      );
-
-      locationList.add(model);
-    }
-    // print("USER LIST ::: ${locationList.length}");
-    return locationList;
   }
 
   Future<List<CountryModel>> getCountryListFromTbl() async {
@@ -204,8 +176,8 @@ class MyDatabase {
     print(":::::::::::::USERID:::$userid::::::::");
     List<apartmentModel> apartmentList = [];
     Database db = await initDatabase();
-    List<Map<String, Object?>> data = await db
-        .rawQuery('select * from Tbl_ApartmentWiseUser AU inner join MST_Apartment A Where A.ApartmentID == AU.ApartmentID and AU.UserID == $userid and AU.isVerified == 1');
+    List<Map<String, Object?>> data = await db.rawQuery(
+        'select * from Tbl_ApartmentWiseUser AU inner join MST_Apartment A Where A.ApartmentID == AU.ApartmentID and AU.UserID == $userid and AU.isVerified == 1');
     print(":::::::::::::DATA:::$data::::::::");
     for (int i = 0; i < data.length; i++) {
       apartmentModel model = apartmentModel(
@@ -226,8 +198,17 @@ class MyDatabase {
     Database db = await initDatabase();
     List<Map<String, Object?>> data = await db.rawQuery(
         'select U.*,AU.ApartmentID from Lst_Userlist U inner join Tbl_ApartmentWiseUser AU Where AU.UserID == U.UserID and ApartmentId = $ApartmentID');
+    UserModel model = UserModel(
+        UserID1: -1,
+        UserName1: 'Select User',
+        Phone1: 'Enter Number',
+        Email1: 'Enter mail',
+        UserType1: "Enter Type ",
+        UserImage1: 'Enter image');
+    userList.add(model);
     for (int i = 0; i < data.length; i++) {
-      UserModel model = UserModel(
+      model = UserModel(
+        UserID1: data[i]['UserID'] as int,
         UserName1: data[i]['UserName'].toString(),
         Phone1: data[i]['Phone'],
         UserImage1: data[i]['UserImage'].toString(),
@@ -243,13 +224,14 @@ class MyDatabase {
     return userList;
   }
 
-  Future<List<VerifyModel>> getNotVerifirdUsrListFromTbl(int apartmentid) async {
-    List<VerifyModel> verifyList = [];
+  Future<List<MemberModel>> getNotVerifirdUsrListFromTbl(
+      int apartmentid) async {
+    List<MemberModel> verifyList = [];
     Database db = await initDatabase();
     List<Map<String, Object?>> data = await db.rawQuery(
         'select * from Tbl_ApartmentWiseUser AU inner join LST_Userlist U on AU.UserID = U.UserID inner join MST_Apartment A on AU.ApartmentID = A.ApartmentID where isVerified == 0 and AU.ApartmentID == $apartmentid');
     for (int i = 0; i < data.length; i++) {
-      VerifyModel model = VerifyModel(
+      MemberModel model = MemberModel(
         ApartmentID1: data[i]['ApartmentID'] as int,
         ApartmentName1: data[i]['ApartmentName'].toString(),
         ApartmentCode1: data[i]['ApartmentCode'] as int,
@@ -271,7 +253,148 @@ class MyDatabase {
     return verifyList;
   }
 
-  Future<int> getAdminOrNotFromTbl(int userid,int apartmentid) async {
+  Future<List<MemberModel>> getMemberData(int apartmentid) async {
+    print(':::::::CALLED MEMBERLIST DATABASE QUERY::::::::::');
+    List<MemberModel> verifyList = [];
+    Database db = await initDatabase();
+    List<Map<String, Object?>> data = await db.rawQuery(
+        'select * from Tbl_ApartmentWiseUser AU inner join LST_Userlist U on AU.UserID = U.UserID inner join MST_Apartment A on AU.ApartmentID = A.ApartmentID where AU.ApartmentID == $apartmentid');
+    print(':::::DATA:::::${data}');
+    for (int i = 0; i < data.length; i++) {
+      MemberModel model = MemberModel(
+        ApartmentID1: data[i]['ApartmentID'] as int,
+        ApartmentName1: data[i]['ApartmentName'].toString(),
+        ApartmentCode1: data[i]['ApartmentCode'] as int,
+        wings1: data[i]['Wings'] as int,
+        UserID1: data[i]['UserID'] as int,
+        UserName1: data[i]['UserName'].toString(),
+        Phone1: data[i]['Phone'],
+        UserImage1: data[i]['UserImage'].toString(),
+        Email1: data[i]['Email'].toString(),
+        UserType1: data[i]['UserType'].toString(),
+        isAdmin1: data[i]['isAdmin'] as int,
+      );
+
+      model.ApartmentWiseUserID = data[i]['ApartmentWiseUserID'] as int;
+      print(':::::LENGTH:::::${verifyList.length}');
+      verifyList.add(model);
+    }
+    // print('USERLIST::::::::${userList}');
+    return verifyList;
+  }
+
+  Future<List<CollectionTypeModel>> getCollectionType() async {
+    print(':::::::CALLED COLEECTION DATABASE QUERY::::::::::');
+    List<CollectionTypeModel> TypeList = [];
+    Database db = await initDatabase();
+    List<Map<String, Object?>> data =
+        await db.rawQuery('select * from LST_Collection_type');
+    CollectionTypeModel model = CollectionTypeModel(
+        CollectionTypeID1: -1, CollectionType1: "Select type");
+    TypeList.add(model);
+    print(':::::DATA:::::${data}');
+    for (int i = 0; i < data.length; i++) {
+      model = CollectionTypeModel(
+        CollectionTypeID1: data[i]['CollectionTypeID'] as int,
+        CollectionType1: data[i]['CollectionType'].toString(),
+      );
+      print(':::::LENGTH:::::${TypeList.length}');
+      TypeList.add(model);
+    }
+    // print('USERLIST::::::::${userList}');
+    return TypeList;
+  }
+
+  Future<List<CollectionModel>> getCollectionData(int apartmentid) async {
+    print(':::::::CALLED COLEECTION DATABASE QUERY::::::::::');
+    List<CollectionModel> collectionList = [];
+    Database db = await initDatabase();
+    List<Map<String, Object?>> data = await db.rawQuery(
+        'select * from LST_Collection C inner join LST_Collection_type CT ON C.CollectionTypeID == CT.CollectionTypeID Inner Join LST_Userlist U ON C.UserID == U.UserID where ApartmentID = $apartmentid');
+    print(':::::DATA:::::${data}');
+    for (int i = 0; i < data.length; i++) {
+      CollectionModel model = CollectionModel(
+        CollectionID1: data[i]['CollectionID'] as int,
+        CollectionTypeID1: data[i]['CollectionTypeID'] as int,
+        CollectionType1: data[i]['CollectionType'].toString(),
+        ApartmentID1: data[i]['ApartmentID'] as int,
+        UserID1: data[i]['UserID'] as int,
+        Amount1: data[i]['Amount'] as int,
+        UserName1: data[i]['UserName'].toString(),
+        Date1: data[i]['Date'].toString(),
+      );
+
+      model.CollectionID = data[i]['CollectionID'] as int;
+      print(':::::LENGTH:::::${collectionList.length}');
+      collectionList.add(model);
+    }
+    // print('USERLIST::::::::${userList}');
+    return collectionList;
+  }
+
+  Future<List<TransactionModel>> getTransactionData(int apartmentid) async {
+    print(':::::::CALLED TRANSACTION DATABASE QUERY::::::::::');
+    List<TransactionModel> TransactionList = [];
+    Database db = await initDatabase();
+    List<Map<String, Object?>> data = await db.rawQuery(
+        'select T.*,U.UserName from LST_Transaction T Inner Join LST_Userlist U ON T.UserID == U.UserID where ApartmentID = $apartmentid');
+    print(':::::DATA:::::${data}');
+    for (int i = 0; i < data.length; i++) {
+      TransactionModel model = TransactionModel(
+        TansactionType1: data[i]['TypeOfTransaction'] as int,
+        ApartmentID1: data[i]['ApartmentID'] as int,
+        UserID1: data[i]['UserID'] as int,
+        Amount1: data[i]['ExpanceAmount'] as int,
+        UserName1: data[i]['UserName'].toString(),
+        Date1: data[i]['Date'].toString(),
+        Remark1: data[i]['Remark'].toString(),
+      );
+
+      model.TransactionID = data[i]['TransactionID'] as int;
+      print(':::::LENGTH:::::${TransactionList.length}');
+      TransactionList.add(model);
+    }
+    // print('USERLIST::::::::${userList}');
+    return TransactionList;
+  }
+
+  Future<int> getTotalCollection(int apartmentid) async {
+    Database db = await initDatabase();
+    int sum = 0;
+    List<Map<String, Object?>> data = await db.rawQuery(
+        'select * from LST_Collection where ApartmentID=$apartmentid');
+    print('data::::::::::::::::$data');
+
+    if (data.isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        sum += data[i]['Amount'] as int;
+      }
+    } else {
+      return 0;
+    }
+
+    return sum;
+  }
+
+  Future<int> getTotalTransaction(int apartmentid) async {
+    Database db = await initDatabase();
+    int sum = 0;
+    List<Map<String, Object?>> data = await db.rawQuery(
+        'select * from LST_Transaction where ApartmentID=$apartmentid');
+    print('data::::::::::::::::$data');
+
+    if (data.isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        sum += data[i]['ExpanceAmount'] as int;
+      }
+    } else {
+      return 0;
+    }
+
+    return sum;
+  }
+
+  Future<int> getAdminOrNotFromTbl(int userid, int apartmentid) async {
     Database db = await initDatabase();
     List<Map<String, Object?>> data = await db.rawQuery(
         'select * from Tbl_ApartmentWiseUser where UserID = "$userid"');
@@ -286,7 +409,6 @@ class MyDatabase {
     } else {
       return -1;
     }
-
   }
 
   Future<UserModel?> getLoginDetail(String email, String password) async {
@@ -298,6 +420,7 @@ class MyDatabase {
       print("Username::::${data[0]['Email']}");
 
       UserModel modelU = UserModel(
+        UserID1: data[0]['UserID'] as int,
         UserName1: data[0]['UserName'].toString(),
         Phone1: data[0]['Phone'],
         UserImage1: data[0]['UserImage'].toString(),
@@ -309,6 +432,61 @@ class MyDatabase {
       return modelU;
     } else {
       return null;
+    }
+  }
+
+  Future<void> upsertIntoCollectionTable(
+      {CollectionID, type, Amount, date, ApartmentID, UserID}) async {
+    Database db = await initDatabase();
+    Map<String, Object?> map = Map();
+
+    map['CollectionTypeID'] = type;
+    map['UserID'] = UserID;
+    map['ApartmentID'] = ApartmentID;
+    map['Amount'] = Amount;
+    map['date'] = date;
+
+    if (CollectionID != -1) {
+      print('CALLING:::::UPDATE::::::');
+      await db.update('LST_Collection', map,
+          where: 'CollectionID = ?', whereArgs: [CollectionID]);
+    } else {
+      print('CALLING:::::INSERT::::::');
+      await db.insert('LST_Collection', map);
+    }
+  }
+
+  Future<void> upsertIntoTransactionTable(
+      {TransactionID,
+      TransactionType,
+      Amount,
+      date,
+      remark,
+      ApartmentID,
+      UserID}) async {
+    Database db = await initDatabase();
+    Map<String, Object?> map = Map();
+    print('UserID:::::::::$UserID');
+    print('type:::::::::$TransactionType');
+    print('ApartmentID:::::::::$ApartmentID');
+    print('Amount:::::::::$Amount');
+    print('date:::::::::$date');
+    print('remark:::::::::$remark');
+
+    map['TypeOfTransaction'] = TransactionType;
+    map['UserID'] = UserID;
+    map['ApartmentID'] = ApartmentID;
+    map['Remark'] = remark;
+    map['Amount'] = Amount;
+    map['date'] = date;
+
+    if (TransactionID != -1) {
+      print('CALLING:::::UPDATE::::::');
+      await db.update('LST_Transaction', map,
+          where: 'TransactionID = ?', whereArgs: [TransactionID]);
+    } else {
+      print('CALLING:::::INSERT::::::');
+      await db.insert('LST_Transaction', map);
     }
   }
 
@@ -333,14 +511,12 @@ class MyDatabase {
     }
   }
 
-  Future<void> upsertIntoPasswordTable(
-      {PasswordID, UserID, Password}) async {
+  Future<void> upsertIntoPasswordTable({PasswordID, UserID, Password}) async {
     Database db = await initDatabase();
     Map<String, Object?> map = Map();
 
     map['UserID'] = UserID;
     map['Password'] = Password;
-
 
     if (PasswordID != null) {
       print('CALLING:::::UPDATE::::::');
@@ -366,7 +542,7 @@ class MyDatabase {
     map['UserType'] = UserType;
     map['UserImage'] = UserImage;
 
-    if (UserID != null) {
+    if (UserID != null && UserID == -1) {
       print('CALLING:::::UPDATE::::::');
       return await db.update('LST_Userlist', map,
           where: 'UserID = ?', whereArgs: [UserID]);
@@ -408,27 +584,23 @@ class MyDatabase {
     print('DATA LENGTH::::::::${data.length}');
 
     for (int i = 0; i < data.length; i++) {
-
-      if(code == data[i]['ApartmentCode'].toString()){
+      if (code == data[i]['ApartmentCode'].toString()) {
         print("COMPARISION::::${code == data[i]['ApartmentCode'].toString()}");
         print("isVerified::::${data[i]['isVerified']}");
         isMatch = data[i]['isVerified'] as int;
       }
     }
 
-
     if (data.isNotEmpty) {
       print("isMatch::::${isMatch}");
       if (isMatch == 1) {
         return 1;
-      } else if(isMatch == 0){
+      } else if (isMatch == 0) {
         return 2;
-      }
-      else {
+      } else {
         return 0;
       }
-    }
-    else {
+    } else {
       return 0;
     }
   }
@@ -454,6 +626,4 @@ class MyDatabase {
     print('DELETEID:::::::::${deletedid}');
     return userID;
   }
-
-
 }

@@ -2,6 +2,10 @@ import 'dart:ui';
 
 import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/models/user_model.dart';
+import 'package:apartment_management/models/verify_model.dart';
+import 'package:apartment_management/pages/collection_list.dart';
+import 'package:apartment_management/pages/member_list.dart';
+import 'package:apartment_management/pages/transaction_list.dart';
 import 'package:apartment_management/pages/verification_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +21,28 @@ class AdminUserDashboard extends StatefulWidget {
   State<AdminUserDashboard> createState() => _AdminUserDashboardState();
 }
 
-class _AdminUserDashboardState extends State<AdminUserDashboard> {
+class _AdminUserDashboardState extends State<AdminUserDashboard>
+    with TickerProviderStateMixin {
   MyDatabase db = MyDatabase();
-
   bool isGetData = true;
+  bool isGetCollection = true;
+  List<MemberModel> localList = [];
+  List<MemberModel> searchList = [];
+  TextEditingController controller = TextEditingController();
+  bool isGetData2 = true;
   int isAdmin = 0;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AvailableFund();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    TabController tabController = TabController(length: 3, vsync: this);
+
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -52,7 +70,7 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
           ),
         ),
         body: Stack(
-          // fit: StackFit.expand,
+          fit: StackFit.expand,
           children: [
             Container(
               height: double.maxFinite,
@@ -60,7 +78,7 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data == true) {
                     return Image.asset(
-                      "assets/images/bg5.jpg",
+                      "assets/images/bg3.jpg",
                       color: Colors.black12,
                       colorBlendMode: BlendMode.color,
                       fit: BoxFit.fill,
@@ -77,15 +95,15 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                 future: isAdminOrNot(),
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
-              child: Column(
-                children: [
-                  SizedBox(height: 50),
-                  Expanded(
-                    flex: 3,
-                    child: Row(
+            Container(
+              height: double.maxFinite,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+                child: Column(
+                  children: [
+                    SizedBox(height: 65),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         FutureBuilder<bool>(
@@ -100,24 +118,32 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                                     ),
                                   );
                                 },
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Verify',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      Icons.verified_rounded,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
                                       color: Colors.white,
-                                    )
-                                  ],
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Verify',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.verified_rounded,
+                                        color: Colors.red,
+                                        size: 18,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               );
                             } else {
@@ -128,10 +154,10 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    flex: 20,
-                    child: Row(
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
                       children: [
                         Expanded(
                           flex: 40,
@@ -143,7 +169,7 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                                 borderRadius: BorderRadius.circular(100),
                               ),
                               child: Icon(Icons.person,
-                                  color: Colors.white, size: 130),
+                                  color: Colors.white, size: 100),
                             ),
                           ),
                         ),
@@ -204,10 +230,10 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    flex: 50,
-                    child: Column(
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
                       children: [
                         Card(
                           margin: EdgeInsets.all(10),
@@ -221,7 +247,7 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                             children: [
                               Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(25, 25, 25, 5),
+                                    const EdgeInsets.fromLTRB(20, 25, 15, 25),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -241,102 +267,242 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
                                               Border.all(color: Colors.black),
                                           borderRadius:
                                               BorderRadius.circular(5)),
-                                      child: Text(
-                                        'Rs. XXXXXX',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.green.shade400),
+                                      child: FutureBuilder<int>(
+                                        builder: (context, snapshot1) {
+                                          if (snapshot1.hasData &&
+                                              snapshot1.data != null) {
+                                            return FutureBuilder<int>(
+                                              builder: (context, snapshot2) {
+                                                if (snapshot2.hasData &&
+                                                    snapshot2.data != null) {
+                                                  var sum = snapshot2.data! -
+                                                      snapshot1.data!;
+                                                  if (sum >= 0) {
+                                                    return Text(
+                                                      'Rs. ${sum}',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors
+                                                              .green.shade400),
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                      'Rs. ${sum * (-1)}',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors
+                                                              .red.shade400),
+                                                    );
+                                                  }
+                                                } else {
+                                                  return Text(
+                                                    'data not found',
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors
+                                                            .green.shade400),
+                                                  );
+                                                }
+                                              },
+                                              future: isGetCollection
+                                                  ? db.getTotalCollection(
+                                                      widget.apartmentid)
+                                                  : null,
+                                            );
+                                          } else {
+                                            return Container();
+                                          }
+                                        },
+                                        future: isGetCollection
+                                            ? db.getTotalTransaction(
+                                                widget.apartmentid)
+                                            : null,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(25, 5, 25, 25),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Amount Receivable',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.topRight,
-                                      width: 140,
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.black),
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Text(
-                                        'Rs. XXXXXX',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.red.shade400),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 10,
-                                      child: Column(
-                                        children: [
-                                          Icon(Icons.people_alt_sharp),
-                                          Text('Members'),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 10,
-                                      child: Column(
-                                        children: [
-                                          Icon(Icons.money),
-                                          Text('Collection'),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 10,
-                                      child: Column(
-                                        children: [
-                                          Icon(Icons.emoji_symbols),
-                                          Text('Expances'),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 10,
-                                      child: Column(
-                                        children: [
-                                          Icon(Icons.question_answer_outlined),
-                                          Text('Complaint'),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Padding(
+                              //   padding:
+                              //       const EdgeInsets.fromLTRB(20, 5, 15, 25),
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Text(
+                              //         'Amount Receivable',
+                              //         style: TextStyle(
+                              //             fontSize: 16,
+                              //             fontWeight: FontWeight.bold),
+                              //       ),
+                              //       Container(
+                              //         alignment: Alignment.topRight,
+                              //         width: 140,
+                              //         padding: EdgeInsets.all(5),
+                              //         decoration: BoxDecoration(
+                              //             border:
+                              //                 Border.all(color: Colors.black),
+                              //             borderRadius:
+                              //                 BorderRadius.circular(5)),
+                              //         child: Text(
+                              //           'Rs. XXXXXX',
+                              //           style: TextStyle(
+                              //               fontSize: 16,
+                              //               fontWeight: FontWeight.w500,
+                              //               color: Colors.red.shade400),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Expanded(
+                      child: FutureBuilder(
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data == true) {
+                            return Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade600,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: TabBar(
+                                      indicator: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.brown.shade900,
+                                      ),
+                                      isScrollable: true,
+                                      controller: tabController,
+                                      labelPadding:
+                                          EdgeInsets.symmetric(horizontal: 30),
+                                      tabs: [
+                                        Tab(
+                                          child: Text(
+                                            'Members',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'Collection',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'Expances',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                                Expanded(
+                                  child: TabBarView(
+                                    controller: tabController,
+                                    children: [
+                                      MemberList(
+                                          apartmentid: widget.apartmentid,
+                                          isAdmin: true),
+                                      CollectionList(
+                                          apartmentid: widget.apartmentid,
+                                          isAdmin: true),
+                                      TransactionList(
+                                          apartmentid: widget.apartmentid,
+                                          isAdmin: true),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade600,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: TabBar(
+                                      indicator: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.white,
+                                      ),
+                                      isScrollable: true,
+                                      controller: tabController,
+                                      labelPadding:
+                                          EdgeInsets.symmetric(horizontal: 30),
+                                      tabs: [
+                                        Tab(
+                                          child: Text(
+                                            'Members',
+                                            style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                            ),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'Collection',
+                                            style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                            ),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'Expances',
+                                            style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                                Expanded(
+                                  child: TabBarView(
+                                    controller: tabController,
+                                    children: [
+                                      MemberList(
+                                          apartmentid: widget.apartmentid,
+                                          isAdmin: false),
+                                      CollectionList(
+                                          apartmentid: widget.apartmentid,
+                                          isAdmin: false),
+                                      TransactionList(
+                                          apartmentid: widget.apartmentid,
+                                          isAdmin: false),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                        future: isAdminOrNot(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -357,6 +523,7 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
   Future<UserModel> userDetail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     UserModel modelU = UserModel(
+        UserID1: prefs.getInt('UserID') as int,
         UserName1: prefs.getString('UserName').toString(),
         Phone1: prefs.getString('Phone'),
         Email1: prefs.getString('Email').toString(),
@@ -365,5 +532,18 @@ class _AdminUserDashboardState extends State<AdminUserDashboard> {
     modelU.UserID = prefs.getInt('UserID');
 
     return modelU;
+  }
+
+  Future<int> AvailableFund() async {
+    db.getTotalCollection(widget.apartmentid);
+    db.getTotalCollection(widget.apartmentid);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var c = prefs.getInt('collection') as int;
+    var t = prefs.getInt('transaction') as int;
+
+    var sum = c - t;
+
+    return sum;
   }
 }

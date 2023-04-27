@@ -4,7 +4,8 @@ import 'package:apartment_management/login/splashscreen.dart';
 import 'package:apartment_management/models/apartment_list_model.dart';
 import 'package:apartment_management/models/password_model.dart';
 import 'package:apartment_management/models/user_model.dart';
-import 'package:apartment_management/pages/dashboard.dart';
+import 'package:apartment_management/pages/admin_user_dashboard.dart';
+import 'package:apartment_management/pages/userwise_apartment_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,7 @@ class _AddUserState extends State<AddUser> {
   MyDatabase db = MyDatabase();
   final _formKey = GlobalKey<FormState>();
   UserModel modelU = UserModel(
+    UserID1: -1,
     UserName1: '',
     Phone1: 0,
     Email1: '',
@@ -298,7 +300,7 @@ class _AddUserState extends State<AddUser> {
 
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => Dashboard(model: modelU),
+                              builder: (context) => UserwiseApartmentList(id:modelU.UserID),
                             ),
                           );
                         } else {

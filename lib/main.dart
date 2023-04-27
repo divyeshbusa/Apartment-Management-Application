@@ -1,7 +1,6 @@
 import 'package:apartment_management/intro%20screen/introduction_page.dart';
 import 'package:apartment_management/login/splashscreen.dart';
 import 'package:apartment_management/pages/apartment_list.dart';
-import 'package:apartment_management/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,9 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: SplashScreen()
+      home: SplashScreen(),
     );
   }
 }
-
-

@@ -4,13 +4,12 @@ import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/models/apartment_list_model.dart';
 import 'package:apartment_management/models/city_model.dart';
 import 'package:apartment_management/models/country_model.dart';
-import 'package:apartment_management/models/location_model.dart';
+
 import 'package:apartment_management/models/state_model.dart';
 import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/pages/add_apartment.dart';
 import 'package:apartment_management/pages/add_user.dart';
 import 'package:apartment_management/pages/user_detail.dart';
-import 'package:apartment_management/pages/user_list.dart';
 import 'package:apartment_management/pages/verification_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,13 +27,6 @@ class ApartmentList extends StatefulWidget {
 
 class _ApartmentListState extends State<ApartmentList> {
   MyDatabase db = MyDatabase();
-  LocationModel modelL = LocationModel(
-      CityID1: -1,
-      CityName1: 'Select City',
-      StateID1: -1,
-      StateName1: 'Select State',
-      CountryID1: -1,
-      CountryName1: 'Select Country');
   CountryModel modelN = CountryModel(
     CountryID1: -1,
     CountryName1: 'Select Country',

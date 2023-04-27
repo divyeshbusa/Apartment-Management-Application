@@ -166,6 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var sharedPref = await SharedPreferences.getInstance();
 
     UserModel modelU = UserModel(
+      UserID1: sharedPref.getInt('UserID') as int,
       UserName1: sharedPref.getString('UserName').toString(),
       Phone1: sharedPref.getString('Phone'),
       Email1: sharedPref.getString('Email').toString(),

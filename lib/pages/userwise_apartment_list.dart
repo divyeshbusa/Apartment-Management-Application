@@ -1,5 +1,6 @@
 import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/login/login_page.dart';
+import 'package:apartment_management/login/splashscreen.dart';
 import 'package:apartment_management/models/apartment_list_model.dart';
 import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/pages/add_apartment.dart';
@@ -73,7 +74,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "assets/images/apartment.jpg",
+                          "assets/images/apartment2.jpg",
                           height: 130,
                         ),
                       ],
@@ -114,40 +115,10 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
               ),
               ListTile(
                 onTap: () async {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
-                },
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color.fromRGBO(174, 143, 60, 1)),
-                      height: 40,
-                      width: 40,
-                      child: const Icon(
-                        Icons.logout_outlined,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(width: 30),
-                    const Text(
-                      'Log Out',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                onTap: () async {
                   final SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   UserModel modelU = UserModel(
+                      UserID1: prefs.getInt('UserID') as int,
                       UserName1: prefs.getString('UserName').toString(),
                       Phone1: prefs.getString('Phone'),
                       Email1: prefs.getString('Email').toString(),
@@ -155,7 +126,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                       UserImage1: prefs.getString('UserImage').toString());
                   modelU.UserID = prefs.getInt('UserID');
 
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ApartmentList(model: modelU),
@@ -190,6 +161,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                       await SharedPreferences.getInstance();
 
                   UserModel modelU = UserModel(
+                      UserID1: prefs.getInt('UserID') as int,
                       UserName1: prefs.getString('UserName').toString(),
                       Phone1: prefs.getString('Phone'),
                       Email1: prefs.getString('Email').toString(),
@@ -197,7 +169,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                       UserImage1: prefs.getString('UserImage').toString());
                   modelU.UserID = prefs.getInt('UserID');
 
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddApartment(model: null),
@@ -226,10 +198,47 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                   ],
                 ),
               ),
+              ListTile(
+                onTap: () async {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+
+                  prefs.setBool(SplashScreenState.KEYLOGIN, false);
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+                },
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Color.fromRGBO(174, 143, 60, 1)),
+                      height: 40,
+                      width: 40,
+                      child: const Icon(
+                        Icons.logout_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    const Text(
+                      'Log Out',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         body: Stack(
+          fit: StackFit.expand,
           children: [
             Container(
               height: double.maxFinite,

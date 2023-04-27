@@ -5,7 +5,7 @@ import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/login/splashscreen.dart';
 import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/pages/add_user.dart';
-import 'package:apartment_management/pages/dashboard.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -231,6 +231,8 @@ class _LoginPageState extends State<LoginPage> {
                           await prefs.setString(
                               'UserImage', modelU.UserImage.toString());
 
+                          prefs.setBool(SplashScreenState.KEYLOGIN, true);
+
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) =>
@@ -400,8 +402,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             InkWell(
               onTap: () async {
-                print(
-                    "::::::::::::::::before model::::::::::::::::::::");
+                print("::::::::::::::::before model::::::::::::::::::::");
                 UserModel? modelU = await db.getLoginDetail(
                   'abc@gmail.com',
                   'admin',
@@ -410,18 +411,15 @@ class _LoginPageState extends State<LoginPage> {
                     "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
 
                 final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
+                    await SharedPreferences.getInstance();
                 await prefs.setInt('UserID', modelU!.UserID as int);
-                await prefs.setString(
-                    'UserName', modelU.UserName.toString());
-                await prefs.setString(
-                    'Email', modelU.Email.toString());
-                await prefs.setString(
-                    'Phone', modelU.Phone.toString());
-                await prefs.setString(
-                    'UserType', modelU.UserType.toString());
-                await prefs.setString(
-                    'UserImage', modelU.UserImage.toString());
+                await prefs.setString('UserName', modelU.UserName.toString());
+                await prefs.setString('Email', modelU.Email.toString());
+                await prefs.setString('Phone', modelU.Phone.toString());
+                await prefs.setString('UserType', modelU.UserType.toString());
+                await prefs.setString('UserImage', modelU.UserImage.toString());
+
+                prefs.setBool(SplashScreenState.KEYLOGIN, true);
 
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
@@ -439,37 +437,137 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Image.asset("assets/images/google.png", width: 20),
-                    SizedBox(width: 25,),
-                    FutureBuilder<UserModel>(
-                        builder: (context, snapshot) {
-                          if (snapshot != null && snapshot.hasData) {
-                            isGetData = false;
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${snapshot.data!.Email}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                      fontSize: 18),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Center(
-                              child: Text('USER NOT FOUND '),
-                            );
-                          }
-                        },
-                        future: isGetData ? userDetail() : null),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Text(
+                      'abc@gmail.com',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontSize: 18),
+                    ),
                   ],
                 ),
               ),
             ),
+            SizedBox(height: 10),
+            InkWell(
+              onTap: () async {
+                print("::::::::::::::::before model::::::::::::::::::::");
+                UserModel? modelU = await db.getLoginDetail(
+                  'dk@gmail.com',
+                  'passwd',
+                );
+                print(
+                    "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                await prefs.setInt('UserID', modelU!.UserID as int);
+                await prefs.setString('UserName', modelU.UserName.toString());
+                await prefs.setString('Email', modelU.Email.toString());
+                await prefs.setString('Phone', modelU.Phone.toString());
+                await prefs.setString('UserType', modelU.UserType.toString());
+                await prefs.setString('UserImage', modelU.UserImage.toString());
+
+                prefs.setBool(SplashScreenState.KEYLOGIN, true);
+
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        UserwiseApartmentList(id: modelU.UserID),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.blue.shade900),
+                    borderRadius: BorderRadius.circular(10)),
+                width: double.maxFinite,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset("assets/images/google.png", width: 20),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Text(
+                      'dk@gmail.com',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            InkWell(
+              onTap: () async {
+                print("::::::::::::::::before model::::::::::::::::::::");
+                UserModel? modelU = await db.getLoginDetail(
+                  'nk@gmail.com',
+                  'passwd',
+                );
+                print(
+                    "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                await prefs.setInt('UserID', modelU!.UserID as int);
+                await prefs.setString('UserName', modelU.UserName.toString());
+                await prefs.setString('Email', modelU.Email.toString());
+                await prefs.setString('Phone', modelU.Phone.toString());
+                await prefs.setString('UserType', modelU.UserType.toString());
+                await prefs.setString('UserImage', modelU.UserImage.toString());
+
+                prefs.setBool(SplashScreenState.KEYLOGIN, true);
+
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        UserwiseApartmentList(id: modelU.UserID),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.blue.shade900),
+                    borderRadius: BorderRadius.circular(10)),
+                width: double.maxFinite,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset("assets/images/google.png", width: 20),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Text(
+                      'nk@gmail.com',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
           ],
         ));
 
@@ -484,6 +582,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<UserModel> userDetail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     UserModel modelU = UserModel(
+      UserID1: prefs.getInt('UserID') as int,
         UserName1: prefs.getString('UserName').toString(),
         Phone1: prefs.getString('Phone'),
         Email1: prefs.getString('Email').toString(),

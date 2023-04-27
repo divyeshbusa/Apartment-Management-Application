@@ -1,4 +1,4 @@
-class VerifyModel{
+class MemberModel{
   int? ApartmentWiseUserID1;
   late int UserID1;
   late String UserName1;
@@ -22,7 +22,7 @@ class VerifyModel{
 
 
 
-  VerifyModel({
+  MemberModel({
     required this.UserID1,
     required this.UserName1,
     required this.Phone1,

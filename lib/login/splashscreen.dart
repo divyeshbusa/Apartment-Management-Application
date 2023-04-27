@@ -5,7 +5,7 @@ import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/intro%20screen/introduction_page.dart';
 import 'package:apartment_management/login/login_page.dart';
 import 'package:apartment_management/models/user_model.dart';
-import 'package:apartment_management/pages/dashboard.dart';
+import 'package:apartment_management/pages/userwise_apartment_list.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +36,7 @@ class SplashScreenState extends State<SplashScreen> {
           child: Icon(
             Icons.apartment,
             color: Color.fromRGBO(255, 150, 166, 1),
-            size: 400,
+            size: 200,
           ),
         ),
       ),
@@ -52,6 +52,7 @@ class SplashScreenState extends State<SplashScreen> {
       if (isLogin != null) {
         if (isLogin) {
           UserModel modelU = UserModel(
+            UserID1: sharedPref.getInt('UserID') as int,
             UserName1: sharedPref.getString('UserName').toString(),
             Phone1: sharedPref.getString('Phone'),
             Email1: sharedPref.getString('Email').toString(),
@@ -61,7 +62,7 @@ class SplashScreenState extends State<SplashScreen> {
           modelU.UserID = sharedPref.getInt('UserID');
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => Dashboard(model: modelU),
+              builder: (context) => UserwiseApartmentList(id: modelU.UserID),
             ),
           );
           print("nextScreen:::::DASHBOARD");
