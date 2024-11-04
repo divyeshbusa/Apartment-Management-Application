@@ -46,6 +46,7 @@ class _AddTransactionState extends State<AddTransaction> {
       Amount1: 0,
       Remark1: '');
 
+
   final List<String> items = [
     'Select Type',
     'Debit',
@@ -92,7 +93,7 @@ class _AddTransactionState extends State<AddTransaction> {
             children: [
               Container(
                 child: Text(
-                  'Registration Form',
+                  'Add Transaction',
                   style: GoogleFonts.montserratAlternates(
                       color: Color.fromRGBO(66, 66, 66, 1),
                       fontSize: 24,
@@ -212,8 +213,12 @@ class _AddTransactionState extends State<AddTransaction> {
                               hint: Row(
                                 children: [
                                   Expanded(
-                                    child: Text(widget.model != null?
-                                      (widget.model!.TansactionType ==0?'DEBIT':'CREDIT'):'Select Type',
+                                    child: Text(
+                                      widget.model != null
+                                          ? (widget.model!.TansactionType == 0
+                                              ? 'DEBIT'
+                                              : 'CREDIT')
+                                          : 'Select Type',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -227,8 +232,13 @@ class _AddTransactionState extends State<AddTransaction> {
                               items: items
                                   .map((item) => DropdownMenuItem<String>(
                                         value: item,
-                                        child: Text(widget.model != null?
-                                        (widget.model!.TansactionType ==0?'DEBIT':'CREDIT'):item,
+                                        child: Text(
+                                          widget.model != null
+                                              ? (widget.model!.TansactionType ==
+                                                      0
+                                                  ? 'DEBIT'
+                                                  : 'CREDIT')
+                                              : item,
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
@@ -363,8 +373,9 @@ class _AddTransactionState extends State<AddTransaction> {
                             TransactionID: widget.model != null
                                 ? widget.model!.TransactionID
                                 : -1,
-                            TransactionType:
-                                selectedValue.toString().toLowerCase() ==
+                            TransactionType: widget.model != null
+                                ? widget.model!.TansactionType
+                                : selectedValue.toString().toLowerCase() ==
                                         'debit'
                                     ? 0
                                     : 1,

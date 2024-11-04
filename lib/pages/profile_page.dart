@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(100, 10, 156, 1),
+                                  color: Colors.blueGrey.shade900,
                                 ),
                               ),
                               Text(
@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(100, 10, 156, 1),
+                                  color: Colors.blueGrey.shade900,
                                 ),
                               ),
                               Text(
@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(100, 10, 156, 1),
+                                  color: Colors.blueGrey.shade900,
                                 ),
                               ),
                               Text(
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(100, 10, 156, 1),
+                                  color: Colors.blueGrey.shade900,
                                 ),
                               ),
                               Text(

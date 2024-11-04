@@ -31,14 +31,36 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: Icon(
-            Icons.apartment,
-            color: Color.fromRGBO(255, 150, 166, 1),
-            size: 200,
+      backgroundColor: Colors.white,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/images/splashscreen.gif",
+                    width: MediaQuery.of(context).size.width * 0.8),
+              ],
+            ),
           ),
-        ),
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/images/du_logo.png",
+                    width: MediaQuery.of(context).size.width * 0.3),
+                SizedBox(
+                  width: 20,
+                ),
+                Image.asset("assets/images/logo_aswdc.png",
+                    width: MediaQuery.of(context).size.width * 0.3),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -48,7 +70,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     var isLogin = sharedPref.getBool(KEYLOGIN);
 
-    Timer(Duration(seconds: 2), () {
+    Timer(Duration(seconds: 3), () {
       if (isLogin != null) {
         if (isLogin) {
           UserModel modelU = UserModel(

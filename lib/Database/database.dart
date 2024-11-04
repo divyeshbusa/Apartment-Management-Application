@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:apartment_management/models/apartment_list_model.dart';
 import 'package:apartment_management/models/city_model.dart';
@@ -11,11 +10,11 @@ import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/models/verify_model.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class MyDatabase {
+
   Future<Database> initDatabase() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String databasePath = join(appDocDir.path, 'Apartment_Management.db');
@@ -400,6 +399,7 @@ class MyDatabase {
         'select * from Tbl_ApartmentWiseUser where UserID = "$userid"');
 
     if (data.isNotEmpty) {
+      print("AparmentID::::${data[0]['ApartmentID']}");
       print("isVerified::::${data[0]['isVerified']}");
       if (data[0]['isAdmin'] == 1 && data[0]['ApartmentID'] == apartmentid) {
         return 1;
@@ -412,6 +412,7 @@ class MyDatabase {
   }
 
   Future<UserModel?> getLoginDetail(String email, String password) async {
+    print(':::::::::::::::Email:$email:::::pass');
     Database db = await initDatabase();
     List<Map<String, Object?>> data = await db.rawQuery(
         'select * from LST_Password P inner join LST_Userlist U on P.UserID = U.UserID where U.Email = "$email" and P.Password = "$password"');
@@ -466,6 +467,7 @@ class MyDatabase {
       UserID}) async {
     Database db = await initDatabase();
     Map<String, Object?> map = Map();
+    print('TransactionID:::::::::$TransactionID');
     print('UserID:::::::::$UserID');
     print('type:::::::::$TransactionType');
     print('ApartmentID:::::::::$ApartmentID');
@@ -477,7 +479,7 @@ class MyDatabase {
     map['UserID'] = UserID;
     map['ApartmentID'] = ApartmentID;
     map['Remark'] = remark;
-    map['Amount'] = Amount;
+    map['ExpanceAmount'] = Amount;
     map['date'] = date;
 
     if (TransactionID != -1) {
@@ -490,7 +492,7 @@ class MyDatabase {
     }
   }
 
-  Future<void> upsertIntoApartmentTable(
+  Future<int> upsertIntoApartmentTable(
       {ApartmentID, ApartmentName, Code, Wings, City}) async {
     Database db = await initDatabase();
     Map<String, Object?> map = Map();
@@ -501,13 +503,13 @@ class MyDatabase {
     map['Wings'] = Wings;
     map['CityID'] = City;
 
-    if (ApartmentID != -1) {
+    if (ApartmentID != null) {
       print('CALLING:::::UPDATE::::::');
-      await db.update('MST_Apartment', map,
+      return await db.update('MST_Apartment', map,
           where: 'ApartmentID = ?', whereArgs: [ApartmentID]);
     } else {
       print('CALLING:::::INSERT::::::');
-      await db.insert('MST_Apartment', map);
+      return await db.insert('MST_Apartment', map);
     }
   }
 
@@ -542,7 +544,7 @@ class MyDatabase {
     map['UserType'] = UserType;
     map['UserImage'] = UserImage;
 
-    if (UserID != null && UserID == -1) {
+    if (UserID != null) {
       print('CALLING:::::UPDATE::::::');
       return await db.update('LST_Userlist', map,
           where: 'UserID = ?', whereArgs: [UserID]);
@@ -626,4 +628,27 @@ class MyDatabase {
     print('DELETEID:::::::::${deletedid}');
     return userID;
   }
+
+  Future<int> deleteCollectionData(CollectionID) async {
+    Database db = await initDatabase();
+    int deletedid = await db.delete(
+      'LST_Collection',
+      where: 'CollectionID= ?',
+      whereArgs: [CollectionID],
+    );
+    print('DELETEID:::::::::${deletedid}');
+    return CollectionID;
+  }
+
+  Future<int> deleteTransactionData(TransactionID) async {
+    Database db = await initDatabase();
+    int deletedid = await db.delete(
+      'LST_Transaction',
+      where: 'TransactionID= ?',
+      whereArgs: [TransactionID],
+    );
+    print('DELETEID:::::::::${deletedid}');
+    return TransactionID;
+  }
+
 }

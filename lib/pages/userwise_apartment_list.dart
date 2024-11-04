@@ -6,6 +6,7 @@ import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/pages/add_apartment.dart';
 import 'package:apartment_management/pages/admin_user_dashboard.dart';
 import 'package:apartment_management/pages/apartment_list.dart';
+import 'package:apartment_management/About_Us/devloper_screen.dart';
 import 'package:apartment_management/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           iconTheme: IconThemeData(
-            color: Colors.white,
+            color: Colors.brown,
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -46,7 +47,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                 child: Text(
                   'Apartment List',
                   style: GoogleFonts.montserratAlternates(
-                      color: Colors.white,
+                      color: Colors.brown.shade900,
                       fontSize: 28,
                       fontWeight: FontWeight.bold),
                 ),
@@ -74,7 +75,7 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "assets/images/apartment2.jpg",
+                          "assets/images/splashscreen.gif",
                           height: 130,
                         ),
                       ],
@@ -96,8 +97,9 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color.fromRGBO(174, 143, 60, 1)),
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blueGrey.shade700,
+                      ),
                       height: 40,
                       width: 40,
                       child: const Icon(
@@ -138,8 +140,9 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color.fromRGBO(174, 143, 60, 1)),
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blueGrey.shade700,
+                      ),
                       height: 40,
                       width: 40,
                       child: const Icon(
@@ -181,8 +184,9 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color.fromRGBO(174, 143, 60, 1)),
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blueGrey.shade700,
+                      ),
                       height: 40,
                       width: 40,
                       child: const Icon(
@@ -193,6 +197,39 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                     const SizedBox(width: 30),
                     const Text(
                       'Add your Apartment',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AboutUs(),
+                    ),
+                  );
+                },
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blueGrey.shade700,
+                        // color:  Colors.blueGrey.shade700,,
+                      ),
+                      height: 40,
+                      width: 40,
+                      child: const Icon(
+                        Icons.engineering_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    const Text(
+                      'Devloper',
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -217,8 +254,9 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color.fromRGBO(174, 143, 60, 1)),
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blueGrey.shade700,
+                      ),
                       height: 40,
                       width: 40,
                       child: const Icon(
@@ -238,15 +276,14 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
           ),
         ),
         body: Stack(
-          fit: StackFit.expand,
           children: [
-            Container(
-              height: double.maxFinite,
-              child: Image.asset(
-                "assets/images/bg4.jpg",
-                fit: BoxFit.fill,
-              ),
-            ),
+            // Container(
+            //   height: double.maxFinite,
+            //   child: Image.asset(
+            //     "assets/images/bg4.jpg",
+            //     fit: BoxFit.fill,
+            //   ),
+            // ),
             Container(
               margin: EdgeInsets.only(top: 20),
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -259,110 +296,271 @@ class _UserwiseApartmentListState extends State<UserwiseApartmentList> {
                       }
                       isGetData = false;
 
-                      return Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          SizedBox(
-                            height: 60,
-                          ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(1),
-                              border: Border.all(color: Colors.white),
-                            ),
-                            child: TextField(
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Search',
-                                  hintStyle: TextStyle(color: Colors.white)),
-                              controller: controller,
-                              onChanged: (value) {
-                                searchList.clear();
-                                for (int i = 0; i < localList.length; i++) {
-                                  if (localList[i]
-                                      .ApartmentName
-                                      .toLowerCase()
-                                      .contains(value.toLowerCase())) {
-                                    searchList.add(localList[i]);
+                      return localList.length != 0
+                          ? Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                SizedBox(
+                                  height: 60,
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: TextField(
+                                    style: TextStyle(
+                                        color: Colors.brown, fontSize: 17),
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          borderSide: BorderSide(
+                                              color: Colors.blueGrey.shade900,
+                                              width: 2),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          borderSide: BorderSide(
+                                              color: Colors.deepOrange,
+                                              width: 3),
+                                        ),
+                                        hintText: 'Search',
+                                        hintStyle: TextStyle(
+                                            color: Colors.deepOrange,
+                                            fontWeight: FontWeight.bold)),
+                                    controller: controller,
+                                    onChanged: (value) {
+                                      searchList.clear();
+                                      for (int i = 0;
+                                          i < localList.length;
+                                          i++) {
+                                        if (localList[i]
+                                            .ApartmentName
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase())) {
+                                          searchList.add(localList[i]);
 
-                                    print(
-                                        'SEARCHLIST::::LENGHTH::::${searchList.length}');
-                                    print(
-                                        'LOCALLIST::::LENGHTH::::${localList[i]}');
-                                  }
-                                }
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
+                                          print(
+                                              'SEARCHLIST::::LENGHTH::::${searchList.length}');
+                                          print(
+                                              'LOCALLIST::::LENGHTH::::${localList[i]}');
+                                        }
+                                      }
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AdminUserDashboard(
+                                                    modelA: searchList[index],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Card(
+                                              shadowColor: Colors.red.shade300,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              elevation: 10,
+                                              shape: const OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  borderSide: BorderSide(
+                                                      // color: Color.fromRGBO(
+                                                      //     230, 150, 156, 1),
+                                                      color: Colors.deepOrange,
+                                                      width: 2)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          searchList[index]
+                                                              .ApartmentName
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .blueGrey
+                                                                  .shade900,
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        // SizedBox(height: 5),
+                                                        // Text(
+                                                        //   'Wings :${searchList[index].wings1.toString()}',
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 13,
+                                                        //       fontWeight:
+                                                        //       FontWeight.bold),
+                                                        // ),
+                                                        SizedBox(height: 2),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          )
+                                        ],
+                                      );
+                                    },
+                                    itemCount: searchList.length,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    UserModel modelU = UserModel(
+                                        UserID1: prefs.getInt('UserID') as int,
+                                        UserName1: prefs
+                                            .getString('UserName')
+                                            .toString(),
+                                        Phone1: prefs.getString('Phone'),
+                                        Email1:
+                                            prefs.getString('Email').toString(),
+                                        UserType1: prefs
+                                            .getString('UserType')
+                                            .toString(),
+                                        UserImage1: prefs
+                                            .getString('UserImage')
+                                            .toString());
+                                    modelU.UserID = prefs.getInt('UserID');
+
+                                    Navigator.push(
+                                      context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            AdminUserDashboard(
-                                                apartmentid: searchList[index]
-                                                    .ApartmentID),
+                                            ApartmentList(model: modelU),
                                       ),
                                     );
                                   },
                                   child: Card(
                                     margin: EdgeInsets.all(10),
+                                    shadowColor: Colors.white,
                                     elevation: 10,
-                                    shape: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        borderSide: BorderSide(
-                                            color: Color.fromRGBO(
-                                                230, 150, 156, 1),
-                                            width: 2)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                    shape: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 2),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 25, 15, 25),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                searchList[index]
-                                                    .ApartmentName
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                'Want to Enter in Aprtment ?',
+                                                style: TextStyle(fontSize: 20),
                                               ),
-                                              // SizedBox(height: 5),
-                                              // Text(
-                                              //   'Wings :${searchList[index].wings1.toString()}',
-                                              //   style: TextStyle(
-                                              //       fontSize: 13,
-                                              //       fontWeight:
-                                              //       FontWeight.bold),
-                                              // ),
-                                              SizedBox(height: 2),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                              itemCount: searchList.length,
-                            ),
-                          ),
-                        ],
-                      );
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+
+                                    UserModel modelU = UserModel(
+                                        UserID1: prefs.getInt('UserID') as int,
+                                        UserName1: prefs
+                                            .getString('UserName')
+                                            .toString(),
+                                        Phone1: prefs.getString('Phone'),
+                                        Email1:
+                                            prefs.getString('Email').toString(),
+                                        UserType1: prefs
+                                            .getString('UserType')
+                                            .toString(),
+                                        UserImage1: prefs
+                                            .getString('UserImage')
+                                            .toString());
+                                    modelU.UserID = prefs.getInt('UserID');
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddApartment(model: null),
+                                      ),
+                                    );
+                                  },
+                                  child: Card(
+                                    margin: EdgeInsets.all(10),
+                                    shadowColor: Colors.white,
+                                    elevation: 10,
+                                    shape: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 2),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 25, 15, 25),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Want to Add Your Apartment \nto list?',
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
                     } else {
                       return Center(
                         child: Text('USER NOT FOUND '),

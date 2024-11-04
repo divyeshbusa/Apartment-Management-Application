@@ -51,7 +51,7 @@ class _CollectionListState extends State<CollectionList> {
                         child: Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.blueGrey.shade900,
                               borderRadius: BorderRadius.circular(12)),
                           child: Row(
                             children: [
@@ -59,13 +59,14 @@ class _CollectionListState extends State<CollectionList> {
                                 'ADD ',
                                 style: TextStyle(
                                     color: widget.isAdmin
-                                        ? Colors.brown.shade900
-                                        : Colors.blue.shade900,
+                                        ? Colors.yellow
+                                        : Colors.blueGrey.shade900,
                                     fontWeight: FontWeight.bold),
                               ),
                               Icon(
                                 Icons.add_circle_outline_rounded,
                                 size: 15,
+                                color: Colors.yellow,
                               ),
                             ],
                           ),
@@ -98,13 +99,13 @@ class _CollectionListState extends State<CollectionList> {
                                       headingRowColor: MaterialStatePropertyAll(
                                         MaterialStateColor.resolveWith(
                                           (states) => widget.isAdmin
-                                              ? Colors.brown.shade900
-                                              : Colors.blue.shade900,
+                                              ? Colors.blueGrey
+                                              : Colors.white,
                                         ),
                                       ),
                                       dataRowColor: MaterialStatePropertyAll(
                                         MaterialStateColor.resolveWith(
-                                            (states) => Colors.brown.shade100),
+                                            (states) => Colors.brown.shade50),
                                       ),
                                       columnSpacing: 1,
                                       horizontalMargin: 5,
@@ -118,7 +119,7 @@ class _CollectionListState extends State<CollectionList> {
                                                   color: Colors.white),
                                             ),
                                           ),
-                                          size: ColumnSize.M,
+                                          size: ColumnSize.L,
                                         ),
                                         DataColumn2(
                                           label: Center(
@@ -138,7 +139,7 @@ class _CollectionListState extends State<CollectionList> {
                                                   color: Colors.white),
                                             ),
                                           ),
-                                          size: ColumnSize.M,
+                                          size: ColumnSize.L,
                                         ),
                                         DataColumn2(
                                             label: Center(
@@ -159,12 +160,10 @@ class _CollectionListState extends State<CollectionList> {
                                             ),
                                             size: ColumnSize.S),
                                         DataColumn2(
-                                            label: Center(
-                                              child: Text(
-                                                'Delete',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
+                                            label: Text(
+                                              'Delete',
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
                                             size: ColumnSize.S),
                                       ],
@@ -216,39 +215,40 @@ class _CollectionListState extends State<CollectionList> {
                                                     color: Colors.green,
                                                   ),
                                                   onTap: () {
+                                                    CollectionModel modelC =CollectionModel(
+                                                        CollectionID1:
+                                                        searchList[index]
+                                                            .CollectionID,
+                                                        CollectionTypeID1:
+                                                        searchList[index]
+                                                            .CollectionTypeID,
+                                                        CollectionType1:
+                                                        searchList[index]
+                                                            .CollectionType,
+                                                        ApartmentID1:
+                                                        searchList[index]
+                                                            .ApartmentID,
+                                                        UserID1: searchList[
+                                                        index]
+                                                            .UserID,
+                                                        UserName1:
+                                                        searchList[
+                                                        index]
+                                                            .UserName,
+                                                        Date1: searchList[
+                                                        index]
+                                                            .Date,
+                                                        Amount1:
+                                                        searchList[
+                                                        index]
+                                                            .Amount);
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             AddCollection(
                                                           apartmentid: widget
                                                               .apartmentid,
-                                                          model: CollectionModel(
-                                                              CollectionID1:
-                                                                  searchList[index]
-                                                                      .CollectionID,
-                                                              CollectionTypeID1:
-                                                                  searchList[index]
-                                                                      .CollectionTypeID,
-                                                              CollectionType1:
-                                                                  searchList[index]
-                                                                      .CollectionType,
-                                                              ApartmentID1:
-                                                                  searchList[index]
-                                                                      .ApartmentID,
-                                                              UserID1: searchList[
-                                                                      index]
-                                                                  .UserID,
-                                                              UserName1:
-                                                                  searchList[
-                                                                          index]
-                                                                      .UserName,
-                                                              Date1: searchList[
-                                                                      index]
-                                                                  .Date,
-                                                              Amount1:
-                                                                  searchList[
-                                                                          index]
-                                                                      .Amount),
+                                                          model: modelC,
                                                         ),
                                                       ),
                                                     );
@@ -258,9 +258,17 @@ class _CollectionListState extends State<CollectionList> {
                                             ),
                                             DataCell(
                                               Center(
-                                                child: Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
+                                                child: InkWell(
+                                                  onTap: (){
+                                                    setState(() {
+                                                        db.deleteCollectionData(searchList[index]
+                                                            .CollectionID);
+                                                    });
+                                                  },
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -316,7 +324,7 @@ class _CollectionListState extends State<CollectionList> {
                                         MaterialStateColor.resolveWith(
                                           (states) => widget.isAdmin
                                               ? Colors.brown.shade900
-                                              : Colors.blue.shade900,
+                                              : Colors.blueGrey.shade900,
                                         ),
                                       ),
                                       dataRowColor: MaterialStatePropertyAll(
@@ -437,6 +445,7 @@ class _CollectionListState extends State<CollectionList> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var userid = prefs.getInt('UserID');
     print("::::::Userid:::${userid}::::::::");
+    print("::::::ApartmentID:::${widget.apartmentid}::::::::");
     int isAdmin = await db.getAdminOrNotFromTbl(userid!, widget.apartmentid);
     print("::::::isAdmin:::${isAdmin}::::::::");
     return (isAdmin == 1);

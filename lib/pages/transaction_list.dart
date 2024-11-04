@@ -50,19 +50,20 @@ class _TransactionListState extends State<TransactionList> {
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.blueGrey.shade900,
                             borderRadius: BorderRadius.circular(12)),
                         child: Row(
                           children: [
                             Text(
                               'ADD ',
                               style: TextStyle(
-                                  color: Colors.brown.shade900,
+                                  color: Colors.yellow,
                                   fontWeight: FontWeight.bold),
                             ),
                             Icon(
                               Icons.add_circle_outline_rounded,
                               size: 15,
+                              color: Colors.yellow,
                             ),
                           ],
                         ),
@@ -95,13 +96,13 @@ class _TransactionListState extends State<TransactionList> {
                                     headingRowColor: MaterialStatePropertyAll(
                                       MaterialStateColor.resolveWith(
                                         (states) => widget.isAdmin
-                                            ? Colors.brown.shade900
-                                            : Colors.blue.shade900,
+                                            ? Colors.blueGrey
+                                            : Colors.blueGrey.shade900,
                                       ),
                                     ),
                                     dataRowColor: MaterialStatePropertyAll(
                                         MaterialStateColor.resolveWith(
-                                            (states) => Colors.brown.shade100)),
+                                            (states) => Colors.brown.shade50)),
                                     columnSpacing: 1,
                                     horizontalMargin: 1,
                                     minWidth: 400,
@@ -233,34 +234,50 @@ class _TransactionListState extends State<TransactionList> {
                                                   color: Colors.green,
                                                 ),
                                                 onTap: () {
+                                                  print('TransactionID:::::::::${searchList[index]
+                                                      .TransactionID}');
+                                                  print('UserID:::::::::${searchList[index]
+                                                      .UserID}');
+                                                  print('type:::::::::${searchList[index]
+                                                      .TansactionType}');
+                                                  print('ApartmentID:::::::::${searchList[index]
+                                                      .ApartmentID}');
+                                                  print('Amount:::::::::${searchList[index]
+                                                      .Amount}');
+                                                  print('date:::::::::${searchList[index]
+                                                      .Date}');
+                                                  print('remark:::::::::${searchList[index]
+                                                      .Remark}');
+                                                  TransactionModel modelT = TransactionModel(
+                                                      TansactionType1:
+                                                      searchList[index]
+                                                          .TansactionType,
+                                                      ApartmentID1:
+                                                      searchList[index]
+                                                          .ApartmentID,
+                                                      UserID1: searchList[
+                                                      index]
+                                                          .UserID,
+                                                      UserName1:
+                                                      searchList[index]
+                                                          .UserName,
+                                                      Date1: searchList[
+                                                      index]
+                                                          .Date,
+                                                      Amount1: searchList[
+                                                      index]
+                                                          .Amount,
+                                                      Remark1: searchList[
+                                                      index]
+                                                          .Remark);
+                                                  modelT.TransactionID = searchList[index].TransactionID;
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           AddTransaction(
                                                         apartmentid:
                                                             widget.apartmentid,
-                                                        model: TransactionModel(
-                                                            TansactionType1:
-                                                                searchList[index]
-                                                                    .TansactionType,
-                                                            ApartmentID1:
-                                                                searchList[index]
-                                                                    .ApartmentID,
-                                                            UserID1: searchList[
-                                                                    index]
-                                                                .UserID,
-                                                            UserName1:
-                                                                searchList[index]
-                                                                    .UserName,
-                                                            Date1: searchList[
-                                                                    index]
-                                                                .Date,
-                                                            Amount1: searchList[
-                                                                    index]
-                                                                .Amount,
-                                                            Remark1: searchList[
-                                                                    index]
-                                                                .Remark),
+                                                        model: modelT
                                                       ),
                                                     ),
                                                   );
@@ -270,9 +287,17 @@ class _TransactionListState extends State<TransactionList> {
                                           ),
                                           DataCell(
                                             Center(
-                                              child: Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  setState(() {
+                                                    db.deleteTransactionData(searchList[index]
+                                                        .TransactionID);
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -328,7 +353,7 @@ class _TransactionListState extends State<TransactionList> {
                                       MaterialStateColor.resolveWith(
                                         (states) => widget.isAdmin
                                             ? Colors.brown.shade900
-                                            : Colors.blue.shade900,
+                                            : Colors.blueGrey.shade900,
                                       ),
                                     ),
                                     dataRowColor: MaterialStatePropertyAll(

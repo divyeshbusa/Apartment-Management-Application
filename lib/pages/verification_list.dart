@@ -179,14 +179,16 @@ class _VerificationListState extends State<VerificationList> {
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
-                                                  Text(
-                                                    searchList[index]
-                                                        .Email
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                  Flexible(
+                                                    child: Text(
+                                                      searchList[index]
+                                                          .Email
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

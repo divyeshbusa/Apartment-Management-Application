@@ -26,7 +26,7 @@ class _AddUserState extends State<AddUser> {
   MyDatabase db = MyDatabase();
   final _formKey = GlobalKey<FormState>();
   UserModel modelU = UserModel(
-    UserID1: -1,
+    UserID1: null,
     UserName1: '',
     Phone1: 0,
     Email1: '',
@@ -106,7 +106,7 @@ class _AddUserState extends State<AddUser> {
                       Expanded(
                         flex: 30,
                         child: Text(
-                          'User Name :',
+                          'Name :',
                           style: TextStyle(
                               color: Color.fromRGBO(255, 150, 166, 1),
                               fontSize: 20,
@@ -184,7 +184,7 @@ class _AddUserState extends State<AddUser> {
                           'User Type :',
                           style: TextStyle(
                               color: Color.fromRGBO(255, 150, 166, 1),
-                              fontSize: 20,
+                              fontSize: 19,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -209,7 +209,7 @@ class _AddUserState extends State<AddUser> {
                           'Password :',
                           style: TextStyle(
                               color: Color.fromRGBO(255, 150, 166, 1),
-                              fontSize: 20,
+                              fontSize: 19,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -234,7 +234,7 @@ class _AddUserState extends State<AddUser> {
                           'Confirm Password :',
                           style: TextStyle(
                               color: Color.fromRGBO(255, 150, 166, 1),
-                              fontSize: 20,
+                              fontSize: 19,
                               fontWeight: FontWeight.bold),
                         ),
                       ),

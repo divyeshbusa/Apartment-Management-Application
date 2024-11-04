@@ -7,14 +7,13 @@ class MemberList extends StatefulWidget {
   var apartmentid;
   bool isAdmin;
 
-  MemberList({required this.apartmentid,required this.isAdmin});
+  MemberList({required this.apartmentid, required this.isAdmin});
 
   @override
   State<MemberList> createState() => _MemberListState();
 }
 
 class _MemberListState extends State<MemberList> {
-
   MyDatabase db = MyDatabase();
   bool isGetData = true;
   List<MemberModel> localList = [];
@@ -30,8 +29,7 @@ class _MemberListState extends State<MemberList> {
         height: double.maxFinite,
         child: FutureBuilder<List<MemberModel>>(
             builder: (context, snapshot) {
-              if (snapshot != null &&
-                  snapshot.hasData) {
+              if (snapshot != null && snapshot.hasData) {
                 if (isGetData) {
                   localList.addAll(snapshot.data!);
                   searchList.addAll(localList);
@@ -65,7 +63,7 @@ class _MemberListState extends State<MemberList> {
                     //             237, 192, 80, 1),
                     //       ),
                     //     ),
-                    //     fillColor: Colors.white,
+                    //     fillColor:  widget.isAdmin ? Colors.blue.shade900:Colors.blueGrey.shade900,,
                     //     filled: true,
                     //     hintText: 'Search',
                     //     hintStyle: TextStyle(
@@ -98,34 +96,24 @@ class _MemberListState extends State<MemberList> {
                     // ),
                     Expanded(
                       child: ListView.builder(
-                        itemBuilder:
-                            (context, index) {
+                        itemBuilder: (context, index) {
                           return Card(
-                            color:
-                            widget.isAdmin ? Colors.brown.shade500:Colors.blue.shade900,
+
+                            color: Colors.grey.shade200,
                             elevation: 10,
-                            shape: const OutlineInputBorder(
+                            shape: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(
-                                    Radius
-                                        .circular(
-                                        10)),
-                                borderSide:
-                                BorderSide(
-                                    color: Colors
-                                        .white,
+                                    BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                    color: widget.isAdmin
+                                        ? Colors.yellow.shade900
+                                        : Colors.blueGrey.shade900,
                                     width: 2)),
                             child: Padding(
-                              padding:
-                              const EdgeInsets
-                                  .all(15.0),
+                              padding: const EdgeInsets.all(15.0),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment
-                                    .center,
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
@@ -135,95 +123,130 @@ class _MemberListState extends State<MemberList> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  searchList[index].UserName.toString(),
+                                                  searchList[index]
+                                                      .UserName
+                                                      .toString(),
                                                   style: TextStyle(
-                                                      fontSize: 30,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
-                                                height:
-                                                5),
+                                            SizedBox(height: 5),
                                             Row(
                                               children: [
-                                                Text(
-                                                  "Phone",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
+                                                Icon(Icons.phone,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                    size: 18,
+                                                    weight: double.maxFinite),
                                                 Text(
                                                   " : ",
                                                   style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                  ),
                                                 ),
                                                 Text(
-                                                  searchList[index].Phone.toString(),
+                                                  searchList[index]
+                                                      .Phone
+                                                      .toString(),
                                                   style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "Email",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                Text(
-                                                  " : ",
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                Text(
-                                                  searchList[index].Email.toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: widget.isAdmin
+                                                        ? Colors.red.shade400
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             Row(
                                               children: [
-                                                Text(
-                                                  "User Type",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
+                                                Icon(Icons.mail,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                    size: 18,
+                                                    weight: double.maxFinite),
                                                 Text(
                                                   " : ",
                                                   style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                  ),
                                                 ),
-                                                Text(
-                                                  searchList[index].UserType.toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
+                                                Flexible(
+                                                  child: Text(
+                                                    searchList[index]
+                                                        .Email
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: widget.isAdmin
+                                                          ? Colors.red.shade400
+                                                          : Colors.blueGrey
+                                                              .shade900,
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
-                                                height:
-                                                10),
+                                            Row(
+                                              children: [
+                                                Icon(Icons.person,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                    size: 18,
+                                                    weight: double.maxFinite),
+                                                Text(
+                                                  " : ",
+                                                  style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: widget.isAdmin
+                                                        ? Colors.blueGrey.shade900
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  searchList[index]
+                                                      .UserType
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: widget.isAdmin
+                                                        ? Colors.red.shade400
+                                                        : Colors
+                                                            .blueGrey.shade900,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10),
                                           ],
                                         ),
                                       ),
@@ -245,9 +268,7 @@ class _MemberListState extends State<MemberList> {
                 );
               }
             },
-            future: isGetData
-                ? db.getMemberData(widget.apartmentid)
-                : null),
+            future: isGetData ? db.getMemberData(widget.apartmentid) : null),
       ),
     );
   }

@@ -9,7 +9,7 @@ import 'package:apartment_management/models/state_model.dart';
 import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/pages/add_apartment.dart';
 import 'package:apartment_management/pages/add_user.dart';
-import 'package:apartment_management/pages/user_detail.dart';
+import 'package:apartment_management/pages/admin_user_dashboard.dart';
 import 'package:apartment_management/pages/verification_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,7 +71,7 @@ class _ApartmentListState extends State<ApartmentList> {
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
-          backgroundColor: Colors.grey.shade700,
+          backgroundColor: Colors.grey.shade900,
           // elevation: 10,
           shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -99,7 +99,7 @@ class _ApartmentListState extends State<ApartmentList> {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding:  EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -146,30 +146,24 @@ class _ApartmentListState extends State<ApartmentList> {
 
                       return DropdownButtonHideUnderline(
                         child: DropdownButton2(
-                          buttonStyleData: ButtonStyleData(
-                            width: MediaQuery.of(context).size.width * 0.90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.grey.shade700),
-                              color: Color.fromRGBO(230, 150, 156, 1),
-                            ),
-                          ),
+                          buttonStyleData: buttonStyle(),
+                          dropdownStyleData: dropdownDecoration(),
                           items: snapshot.data!
                               .map((item) => DropdownMenuItem<CountryModel?>(
-                                    value: item,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        item.CountryName.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ))
+                            value: item,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                item.CountryName.toString(),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ))
                               .toList(),
                           value: modelN,
                           onChanged: (value) {
@@ -185,7 +179,7 @@ class _ApartmentListState extends State<ApartmentList> {
                           },
                           iconStyleData: IconStyleData(
                             icon: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
+                              padding: const EdgeInsets.only(right: 6.0),
                               child: const Icon(
                                 color: Colors.white,
                                 Icons.keyboard_arrow_down_outlined,
@@ -216,30 +210,25 @@ class _ApartmentListState extends State<ApartmentList> {
 
                       return DropdownButtonHideUnderline(
                         child: DropdownButton2(
-                          buttonStyleData: ButtonStyleData(
-                            width: MediaQuery.of(context).size.width * 0.90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.grey.shade700),
-                              color: Color.fromRGBO(230, 150, 156, 1),
-                            ),
-                          ),
+
+                          buttonStyleData: buttonStyle(),
+                          dropdownStyleData: dropdownDecoration(),
                           items: snapshot.data!
                               .map((item) => DropdownMenuItem<StateModel?>(
-                                    value: item,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        item.StateName.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ))
+                            value: item,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                item.StateName.toString(),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ))
                               .toList(),
                           value: modelS,
                           onChanged: (value) {
@@ -252,8 +241,8 @@ class _ApartmentListState extends State<ApartmentList> {
                           },
                           iconStyleData: IconStyleData(
                             icon: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: const Icon(
+                              padding:  EdgeInsets.only(right: 6.0),
+                              child:  Icon(
                                 color: Colors.white,
                                 Icons.keyboard_arrow_down_outlined,
                               ),
@@ -272,6 +261,9 @@ class _ApartmentListState extends State<ApartmentList> {
                 ),
               ],
             ),
+
+
+
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -285,14 +277,8 @@ class _ApartmentListState extends State<ApartmentList> {
 
                       return DropdownButtonHideUnderline(
                         child: DropdownButton2(
-                          buttonStyleData: ButtonStyleData(
-                            width: MediaQuery.of(context).size.width * 0.90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.grey.shade700),
-                              color: Color.fromRGBO(230, 150, 156, 1),
-                            ),
-                          ),
+                          buttonStyleData: buttonStyle(),
+                          dropdownStyleData: dropdownDecoration(),
                           items: snapshot.data!
                               .map((item) => DropdownMenuItem<CityModel?>(
                                     value: item,
@@ -303,7 +289,7 @@ class _ApartmentListState extends State<ApartmentList> {
                                         style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                          color: Colors.white,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -320,7 +306,7 @@ class _ApartmentListState extends State<ApartmentList> {
                           },
                           iconStyleData: IconStyleData(
                             icon: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
+                              padding:  EdgeInsets.only(right: 6.0),
                               child: const Icon(
                                 color: Colors.white,
                                 Icons.keyboard_arrow_down_outlined,
@@ -339,23 +325,38 @@ class _ApartmentListState extends State<ApartmentList> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MyButton(
-                    onTap: () {
-                      setState(() {
-                        localList.clear();
-                        searchList.clear();
-                        isGetData = true;
-                      });
-                    },
-                    name: 'Submit',
-                    ContainerColor: Color.fromRGBO(174, 143, 60, 1),
-                    fontsize: 20,
-                    padding: 15),
-              ],
+            SizedBox(height: 40),
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 24.0),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    localList.clear();
+                    searchList.clear();
+                    isGetData = true;
+                  });
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 150,
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey.shade700),
+                    color: Colors.red.shade400,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24),
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: 10),
             Expanded(
@@ -376,18 +377,28 @@ class _ApartmentListState extends State<ApartmentList> {
                           children: [
                             Container(
                               padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(1),
-                                border: Border.all(
-                                    color: Color.fromRGBO(230, 150, 156, 1)),
-                              ),
-                              child: TextField(
+
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Color.fromRGBO(237, 192, 80, 1), width: 2),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueGrey, width: 3),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(
+                                      color: Color.fromRGBO(237, 192, 80, 1),
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 style: TextStyle(
+
                                     color: Color.fromRGBO(230, 150, 156, 1),
                                     fontSize: 17),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Search'),
+
                                 controller: controller,
                                 onChanged: (value) {
                                   searchList.clear();
@@ -428,17 +439,16 @@ class _ApartmentListState extends State<ApartmentList> {
                                       print(
                                           "USERID::::::${widget.model!.UserID}");
                                       showAlertDialogForVerification(context,
-                                          searchList[index].ApartmentID);
+                                          searchList[index]);
                                     },
                                     child: Card(
                                       margin: EdgeInsets.all(10),
                                       elevation: 10,
-                                      shape: const OutlineInputBorder(
+                                      shape:  OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Color.fromRGBO(
-                                                  230, 150, 156, 1),
+                                              color: Colors.red.shade400,
                                               width: 2)),
                                       child: Padding(
                                         padding: const EdgeInsets.all(15.0),
@@ -498,7 +508,23 @@ class _ApartmentListState extends State<ApartmentList> {
     );
   }
 
-  showAlertDialogForVerification(BuildContext context, int? apartmentID) {
+  ButtonStyleData buttonStyle(){
+    return  ButtonStyleData(
+
+    width: MediaQuery.of(context).size.width * 0.60,
+    decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(color: Colors.grey.shade700),
+    color: Color.fromRGBO(174, 143, 60, 1),
+    ),
+    );
+  }
+
+  DropdownStyleData dropdownDecoration(){
+   return DropdownStyleData(decoration: BoxDecoration(color: Colors.red.shade400,));
+  }
+
+  showAlertDialogForVerification(BuildContext context, apartmentModel modelA) {
     verifyController.text = '';
     Widget okButton = TextButton(
       child: Container(
@@ -522,7 +548,7 @@ class _ApartmentListState extends State<ApartmentList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UserDetail(apartmentid: apartmentID),
+                  builder: (context) => AdminUserDashboard(modelA: modelA)
                 ),
               );
             },
@@ -540,7 +566,7 @@ class _ApartmentListState extends State<ApartmentList> {
             () {
               db.upsertIntoApartmentWiseUser(
                 ApartmentWiseUserID: null,
-                ApartmentID: apartmentID,
+                ApartmentID: modelA.ApartmentID,
                 UserID: widget.model!.UserID as int,
                 isVerified: 0,
                 isAdmin: 0,
@@ -557,7 +583,8 @@ class _ApartmentListState extends State<ApartmentList> {
     );
 
     AlertDialog alert = AlertDialog(
-      backgroundColor: Color.fromRGBO(230, 150, 156, 1),
+      // backgroundColor: Color.fromRGBO(230, 150, 156, 1),
+      backgroundColor: Colors.red.shade400,
       shape: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       title: Text(
         "Enter Verificaton Code",
@@ -594,7 +621,8 @@ class _ApartmentListState extends State<ApartmentList> {
     );
 
     AlertDialog alert = AlertDialog(
-      backgroundColor: Color.fromRGBO(230, 150, 156, 1),
+      // backgroundColor: Color.fromRGBO(230, 150, 156, 1),
+      backgroundColor: Colors.red.shade400,
       shape: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       title: Text(
         "",
@@ -627,7 +655,7 @@ class _ApartmentListState extends State<ApartmentList> {
     );
 
     AlertDialog alert = AlertDialog(
-      backgroundColor: Color.fromRGBO(230, 150, 156, 1),
+      backgroundColor: Colors.red.shade400,
       shape: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       title: Text(
         "",

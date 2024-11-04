@@ -322,16 +322,19 @@ class _AddCollectionState extends State<AddCollection> {
                           CollectionID: widget.model != null
                               ? widget.model!.CollectionID
                               : -1,
-                          UserID: modelU.UserID,
+                          UserID: modelU!.UserID,
                           ApartmentID: widget.apartmentid,
-                          type: modelT.CollectionTypeID,
+                          type: modelT?.CollectionTypeID,
                           Amount: amountController.text.toString(),
                           date: getFormateddate(selectedDate),
 
                         );
                         debugPrint(getFormateddate(selectedDate));
                       }
+                      setState(() {
+                      });
                       Navigator.of(context).pop();
+
                     },
                     child: Container(
                       padding:

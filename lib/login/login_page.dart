@@ -1,3 +1,4 @@
+import 'package:apartment_management/Componets/Gmail_login.dart';
 import 'package:apartment_management/Componets/my_button.dart';
 import 'package:apartment_management/Componets/my_textfield.dart';
 import 'package:apartment_management/Componets/sqare_tile.dart';
@@ -5,6 +6,7 @@ import 'package:apartment_management/Database/database.dart';
 import 'package:apartment_management/login/splashscreen.dart';
 import 'package:apartment_management/models/user_model.dart';
 import 'package:apartment_management/pages/add_user.dart';
+import 'package:flutter/cupertino.dart';
 
 
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   MyDatabase db = MyDatabase();
   final _formKey = GlobalKey<FormState>();
-
+  bool hidePassword = true;
   bool isGetData = true;
 
   @override
@@ -122,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       controller: passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
+                      obscureText: hidePassword,
+                      decoration:  InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
@@ -138,6 +140,18 @@ class _LoginPageState extends State<LoginPage> {
                         hintStyle: TextStyle(
                           color: Color.fromRGBO(67, 89, 101, 1),
                         ),
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            setState(() {
+                              hidePassword = !hidePassword;
+                            });
+                          },
+                          child: Icon(
+                            CupertinoIcons.eye,
+                            color: hidePassword ? Colors.black : Colors.deepOrange,
+                          ),
+                        ),
+
                       ),
                     ),
                   ),
@@ -395,7 +409,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.white,
         shape: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
         title: Text(
-          "Google Login",
+          "G-mail Login",
           style: TextStyle(color: Colors.black),
         ),
         content: Column(
@@ -455,119 +469,233 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            InkWell(
-              onTap: () async {
-                print("::::::::::::::::before model::::::::::::::::::::");
-                UserModel? modelU = await db.getLoginDetail(
-                  'dk@gmail.com',
-                  'passwd',
-                );
-                print(
-                    "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
-
-                final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-                await prefs.setInt('UserID', modelU!.UserID as int);
-                await prefs.setString('UserName', modelU.UserName.toString());
-                await prefs.setString('Email', modelU.Email.toString());
-                await prefs.setString('Phone', modelU.Phone.toString());
-                await prefs.setString('UserType', modelU.UserType.toString());
-                await prefs.setString('UserImage', modelU.UserImage.toString());
-
-                prefs.setBool(SplashScreenState.KEYLOGIN, true);
-
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        UserwiseApartmentList(id: modelU.UserID),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.blue.shade900),
-                    borderRadius: BorderRadius.circular(10)),
-                width: double.maxFinite,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image.asset("assets/images/google.png", width: 20),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Text(
-                      'dk@gmail.com',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                          fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            InkWell(
-              onTap: () async {
-                print("::::::::::::::::before model::::::::::::::::::::");
-                UserModel? modelU = await db.getLoginDetail(
-                  'nk@gmail.com',
-                  'passwd',
-                );
-                print(
-                    "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
-
-                final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-                await prefs.setInt('UserID', modelU!.UserID as int);
-                await prefs.setString('UserName', modelU.UserName.toString());
-                await prefs.setString('Email', modelU.Email.toString());
-                await prefs.setString('Phone', modelU.Phone.toString());
-                await prefs.setString('UserType', modelU.UserType.toString());
-                await prefs.setString('UserImage', modelU.UserImage.toString());
-
-                prefs.setBool(SplashScreenState.KEYLOGIN, true);
-
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        UserwiseApartmentList(id: modelU.UserID),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.blue.shade900),
-                    borderRadius: BorderRadius.circular(10)),
-                width: double.maxFinite,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image.asset("assets/images/google.png", width: 20),
-                    SizedBox(
-                      width: 25,
-                    ),
-                    Text(
-                      'nk@gmail.com',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                          fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
+            SizedBox(height: 10,),
+            // GmailLogin(Gmail: 'dk@gmail.com',Password: 'passwd'),
+            // SizedBox(height: 10),
+            // InkWell(
+            //   onTap: () async {
+            //     print("::::::::::::::::before model::::::::::::::::::::");
+            //     UserModel? modelU = await db.getLoginDetail(
+            //       'dk@gmail.com',
+            //       'passwd',
+            //     );
+            //     print(
+            //         "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+            //
+            //     final SharedPreferences prefs =
+            //         await SharedPreferences.getInstance();
+            //     await prefs.setInt('UserID', modelU!.UserID as int);
+            //     await prefs.setString('UserName', modelU.UserName.toString());
+            //     await prefs.setString('Email', modelU.Email.toString());
+            //     await prefs.setString('Phone', modelU.Phone.toString());
+            //     await prefs.setString('UserType', modelU.UserType.toString());
+            //     await prefs.setString('UserImage', modelU.UserImage.toString());
+            //
+            //     prefs.setBool(SplashScreenState.KEYLOGIN, true);
+            //
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (context) =>
+            //             UserwiseApartmentList(id: modelU.UserID),
+            //       ),
+            //     );
+            //   },
+            //   child: Container(
+            //     padding: EdgeInsets.all(10),
+            //     decoration: BoxDecoration(
+            //         border: Border.all(width: 2, color: Colors.blue.shade900),
+            //         borderRadius: BorderRadius.circular(10)),
+            //     width: double.maxFinite,
+            //     child: Row(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         SizedBox(
+            //           width: 10,
+            //         ),
+            //         Image.asset("assets/images/google.png", width: 20),
+            //         SizedBox(
+            //           width: 25,
+            //         ),
+            //         Text(
+            //           'dk@gmail.com',
+            //           style: TextStyle(
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //               fontSize: 18),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 10),
+            // InkWell(
+            //   onTap: () async {
+            //     print("::::::::::::::::before model::::::::::::::::::::");
+            //     UserModel? modelU = await db.getLoginDetail(
+            //       'nk@gmail.com',
+            //       'passwd',
+            //     );
+            //     print(
+            //         "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+            //
+            //     final SharedPreferences prefs =
+            //         await SharedPreferences.getInstance();
+            //     await prefs.setInt('UserID', modelU!.UserID as int);
+            //     await prefs.setString('UserName', modelU.UserName.toString());
+            //     await prefs.setString('Email', modelU.Email.toString());
+            //     await prefs.setString('Phone', modelU.Phone.toString());
+            //     await prefs.setString('UserType', modelU.UserType.toString());
+            //     await prefs.setString('UserImage', modelU.UserImage.toString());
+            //
+            //     prefs.setBool(SplashScreenState.KEYLOGIN, true);
+            //
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (context) =>
+            //             UserwiseApartmentList(id: modelU.UserID),
+            //       ),
+            //     );
+            //   },
+            //   child: Container(
+            //     padding: EdgeInsets.all(10),
+            //     decoration: BoxDecoration(
+            //         border: Border.all(width: 2, color: Colors.blue.shade900),
+            //         borderRadius: BorderRadius.circular(10)),
+            //     width: double.maxFinite,
+            //     child: Row(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         SizedBox(
+            //           width: 10,
+            //         ),
+            //         Image.asset("assets/images/google.png", width: 20),
+            //         SizedBox(
+            //           width: 25,
+            //         ),
+            //         Text(
+            //           'nk@gmail.com',
+            //           style: TextStyle(
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //               fontSize: 18),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 10),
+            // InkWell(
+            //   onTap: () async {
+            //     print("::::::::::::::::before model::::::::::::::::::::");
+            //     UserModel? modelU = await db.getLoginDetail(
+            //       'kp@gmail.com',
+            //       'passwd',
+            //     );
+            //     print(
+            //         "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+            //
+            //     final SharedPreferences prefs =
+            //     await SharedPreferences.getInstance();
+            //     await prefs.setInt('UserID', modelU!.UserID as int);
+            //     await prefs.setString('UserName', modelU.UserName.toString());
+            //     await prefs.setString('Email', modelU.Email.toString());
+            //     await prefs.setString('Phone', modelU.Phone.toString());
+            //     await prefs.setString('UserType', modelU.UserType.toString());
+            //     await prefs.setString('UserImage', modelU.UserImage.toString());
+            //
+            //     prefs.setBool(SplashScreenState.KEYLOGIN, true);
+            //
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (context) =>
+            //             UserwiseApartmentList(id: modelU.UserID),
+            //       ),
+            //     );
+            //   },
+            //   child: Container(
+            //     padding: EdgeInsets.all(10),
+            //     decoration: BoxDecoration(
+            //         border: Border.all(width: 2, color: Colors.blue.shade900),
+            //         borderRadius: BorderRadius.circular(10)),
+            //     width: double.maxFinite,
+            //     child: Row(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         SizedBox(
+            //           width: 10,
+            //         ),
+            //         Image.asset("assets/images/google.png", width: 20),
+            //         SizedBox(
+            //           width: 25,
+            //         ),
+            //         Text(
+            //           'kp@gmail.com',
+            //           style: TextStyle(
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //               fontSize: 18),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 10),
+            // InkWell(
+            //   onTap: () async {
+            //     print("::::::::::::::::before model::::::::::::::::::::");
+            //     UserModel? modelU = await db.getLoginDetail(
+            //       'rv@gmail.com',
+            //       'passwd',
+            //     );
+            //     print(
+            //         "::::::::::::::::after model::::::::::::::::::::${modelU!.UserName}");
+            //
+            //     final SharedPreferences prefs =
+            //     await SharedPreferences.getInstance();
+            //     await prefs.setInt('UserID', modelU!.UserID as int);
+            //     await prefs.setString('UserName', modelU.UserName.toString());
+            //     await prefs.setString('Email', modelU.Email.toString());
+            //     await prefs.setString('Phone', modelU.Phone.toString());
+            //     await prefs.setString('UserType', modelU.UserType.toString());
+            //     await prefs.setString('UserImage', modelU.UserImage.toString());
+            //
+            //     prefs.setBool(SplashScreenState.KEYLOGIN, true);
+            //
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (context) =>
+            //             UserwiseApartmentList(id: modelU.UserID),
+            //       ),
+            //     );
+            //   },
+            //   child: Container(
+            //     padding: EdgeInsets.all(10),
+            //     decoration: BoxDecoration(
+            //         border: Border.all(width: 2, color: Colors.blue.shade900),
+            //         borderRadius: BorderRadius.circular(10)),
+            //     width: double.maxFinite,
+            //     child: Row(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         SizedBox(
+            //           width: 10,
+            //         ),
+            //         Image.asset("assets/images/google.png", width: 20),
+            //         SizedBox(
+            //           width: 25,
+            //         ),
+            //         Text(
+            //           'rv@gmail.com',
+            //           style: TextStyle(
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //               fontSize: 18),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 10),
           ],
         ));
 
